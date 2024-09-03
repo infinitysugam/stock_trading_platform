@@ -1,1 +1,1 @@
-# stock_trading_platform
+# Algo Trading Web-Application using Reinforcement Learning 
