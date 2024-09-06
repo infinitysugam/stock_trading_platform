@@ -16,7 +16,7 @@ This project is a Django-based stock trading platform that supports real-time da
 git clone https://github.com/your-repo/stock-trading-platform.git
 cd stock-trading-platform
 
-
+### 2. Setup virtual environment
 # Create a virtual environment (optional)
 python3.10 -m venv env
 
@@ -27,9 +27,7 @@ python3.10 -m venv env
 source env/bin/activate
 
 
-
-# Install Django
-pip install django
+###3. Install Python Dependencies
 
 # Install all required packages from the requirements.txt file
 pip install -r requirements.txt
