@@ -10,9 +10,10 @@ This project is a Django-based stock trading platform that supports real-time da
 
 ## Setup Instructions
 
-### 1. Clone the Repository
+### Clone the Repository
 
 ```bash
+### 1. Clone the repository
 git clone https://github.com/your-repo/stock-trading-platform.git
 cd stock-trading-platform
 
