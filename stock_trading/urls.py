@@ -16,8 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from market_overwatch import views as market_overwatch_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home/',)
+    path('',market_overwatch_views.trading_view,name='trading_view')
 ]
