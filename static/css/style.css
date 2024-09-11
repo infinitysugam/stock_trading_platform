@@ -12,6 +12,11 @@
     text-overflow: ellipsis; /* Add ellipsis for overflowed text */
 }
 
+.nav-item-user a{
+    width: 40px;
+    height:40px;
+}
+
 /* Adjust padding and spacing for a clean look */
 .nav-link {
     padding: 0.5rem 1rem; /* Adjust padding to fit better */
