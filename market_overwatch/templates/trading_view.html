@@ -1,62 +1,157 @@
-{% extends "base.html" %}  
-{% block content %}
-<div>
-    <!-- TradingView Widget BEGIN -->
+<!-- TradingView Widget BEGIN -->
+<!-- In your main HTML file -->
+<!-- In your main HTML file -->
+{% extends "base.html" %}
+{% block content %} 
+
+
+<!-- TradingView Widget BEGIN -->
 <div class="tradingview-widget-container">
-    <div class="tradingview-widget-container__widget"></div>
-    <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
-    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+  <div class="tradingview-widget-container__widget"></div>
+  <!-- <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div> -->
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+  {
+  "symbols": [
     {
-    "symbols": [
+      "proName": "FOREXCOM:SPXUSD",
+      "title": "S&P 500 Index"
+    },
+    {
+      "proName": "FOREXCOM:NSXUSD",
+      "title": "US 100 Cash CFD"
+    },
+    {
+      "proName": "FX_IDC:EURUSD",
+      "title": "EUR to USD"
+    },
+    {
+      "proName": "BITSTAMP:BTCUSD",
+      "title": "Bitcoin"
+    },
+    {
+      "proName": "BITSTAMP:ETHUSD",
+      "title": "Ethereum"
+    }
+  ],
+  "showSymbolLogo": true,
+  "isTransparent": true,
+  "displayMode": "regular",
+  "colorTheme": "dark",
+  "locale": "en"
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+
+
+<div class="charts-container">
+  <!-- TradingView Chart 1 -->
+  <div class="tradingview-widget-container chart1">
+      <div class="tradingview-widget-container__widget"></div>
+      <!-- <div class="tradingview-widget-copyright">
+          <a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank">
+              <span class="blue-text">Track all markets on TradingView</span>
+          </a>
+      </div> -->
+      
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
       {
-        "proName": "FOREXCOM:SPXUSD",
-        "title": "S&P 500 Index"
-      },
-      {
-        "proName": "FOREXCOM:NSXUSD",
-        "title": "US 100 Cash CFD"
-      },
-      {
-        "proName": "FX_IDC:EURUSD",
-        "title": "EUR to USD"
-      },
-      {
-        "proName": "BITSTAMP:BTCUSD",
-        "title": "Bitcoin"
-      },
-      {
-        "proName": "BITSTAMP:ETHUSD",
-        "title": "Ethereum"
+      "autosize": true,
+      "symbol": "NASDAQ:AAPL",
+      "interval": "D",
+      "timezone": "Etc/UTC",
+      "theme": "dark",
+      "style": "1",
+      "locale": "en",
+      "allow_symbol_change": true,
+      "calendar": false,
+      "support_host": "https://www.tradingview.com"
       }
-    ],
-    "showSymbolLogo": true,
-    "isTransparent": false,
-    "displayMode": "adaptive",
-    "colorTheme": "dark",
-    "locale": "en"
-  }
-    </script>
+      </script>
   </div>
-  <!-- TradingView Widget END -->
+
+  <!-- TradingView Chart 2 -->
+  <div class="tradingview-widget-container chart2">
+      <div class="tradingview-widget-container__widget"></div>
+      <!-- <div class="tradingview-widget-copyright">
+          <a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank">
+              <span class="blue-text">Track all markets on TradingView</span>
+          </a>
+      </div> -->
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+      {
+      "colorTheme": "dark",
+      "dateRange": "12M",
+      "showChart": true,
+      "locale": "en",
+      "largeChartUrl": "",
+      "isTransparent": true,
+      "showSymbolLogo": true,
+      "showFloatingTooltip": false,
+      "width": "400",
+      "height": "550",
+      "plotLineColorGrowing": "rgba(41, 98, 255, 1)",
+      "plotLineColorFalling": "rgba(41, 98, 255, 1)",
+      "gridLineColor": "rgba(240, 243, 250, 0)",
+      "scaleFontColor": "rgba(209, 212, 220, 1)",
+      "belowLineFillColorGrowing": "rgba(41, 98, 255, 0.12)",
+      "belowLineFillColorFalling": "rgba(41, 98, 255, 0.12)",
+      "belowLineFillColorGrowingBottom": "rgba(41, 98, 255, 0)",
+      "belowLineFillColorFallingBottom": "rgba(41, 98, 255, 0)",
+      "symbolActiveColor": "rgba(41, 98, 255, 0.12)",
+      "tabs": [
+          {
+          "title": "Indices",
+          "symbols": [
+              {"s": "FOREXCOM:SPXUSD", "d": "S&P 500 Index"},
+              {"s": "FOREXCOM:NSXUSD", "d": "US 100 Cash CFD"},
+              {"s": "FOREXCOM:DJI", "d": "Dow Jones Industrial Average Index"},
+              {"s": "INDEX:NKY", "d": "Nikkei 225"},
+              {"s": "INDEX:DEU40", "d": "DAX Index"},
+              {"s": "FOREXCOM:UKXGBP", "d": "FTSE 100 Index"}
+          ],
+          "originalTitle": "Indices"
+          },
+          {
+          "title": "Futures",
+          "symbols": [
+              {"s": "CME_MINI:ES1!", "d": "S&P 500"},
+              {"s": "CME:6E1!", "d": "Euro"},
+              {"s": "COMEX:GC1!", "d": "Gold"},
+              {"s": "NYMEX:CL1!", "d": "WTI Crude Oil"},
+              {"s": "NYMEX:NG1!", "d": "Gas"},
+              {"s": "CBOT:ZC1!", "d": "Corn"}
+          ],
+          "originalTitle": "Futures"
+          },
+          {
+          "title": "Bonds",
+          "symbols": [
+              {"s": "CBOT:ZB1!", "d": "T-Bond"},
+              {"s": "CBOT:UB1!", "d": "Ultra T-Bond"},
+              {"s": "EUREX:FGBL1!", "d": "Euro Bund"},
+              {"s": "EUREX:FBTP1!", "d": "Euro BTP"},
+              {"s": "EUREX:FGBM1!", "d": "Euro BOBL"}
+          ],
+          "originalTitle": "Bonds"
+          },
+          {
+          "title": "Forex",
+          "symbols": [
+              {"s": "FX:EURUSD", "d": "EUR to USD"},
+              {"s": "FX:GBPUSD", "d": "GBP to USD"},
+              {"s": "FX:USDJPY", "d": "USD to JPY"},
+              {"s": "FX:USDCHF", "d": "USD to CHF"},
+              {"s": "FX:AUDUSD", "d": "AUD to USD"},
+              {"s": "FX:USDCAD", "d": "USD to CAD"}
+          ],
+          "originalTitle": "Forex"
+          }
+      ]
+      }
+      </script>
+  </div>
 </div>
 
-<div class="tradingview-widget-container" style="height:100%;width:100%">
-    <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
-    <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
-    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-//     {
-//     "autosize": true,
-//     "symbol": "NASDAQ:AAPL",
-//     "interval": "D",
-//     "timezone": "Etc/UTC",
-//     "theme": "dark",
-//     "style": "1",
-//     "locale": "en",
-//     "allow_symbol_change": true,
-//     "calendar": false,
-//     "support_host": "https://www.tradingview.com"
-//   }
-    </script>
-  </div>
 
-{% endblock %}
+{% endblock %} 
