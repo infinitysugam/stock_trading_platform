@@ -1,0 +1,33 @@
+.sidebar {
+    width: 60px; /* Slim width similar to Coinbase */
+    background-color: rgba(20, 22, 25, 0.85); /* Dark and slightly transparent */
+    min-height: 100vh; /* Full height */
+    transition: width 0.3s ease; /* Smooth transition */
+}
+
+.sidebar:hover {
+    width: 200px; /* Expands on hover for better visibility */
+}
+
+.sidebar .nav-link {
+    display: flex;
+    align-items: center;
+    color: #ffffffb3; /* Slightly dimmed white */
+    padding: 10px 5px;
+    transition: all 0.3s ease; /* Smooth animation on hover */
+}
+
+.sidebar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Slight background change on hover */
+    color: #ffffff; /* Bright white on hover */
+    border-radius: 8px; /* Rounded corners on hover */
+}
+
+.sidebar .nav-link i {
+    margin-right: 10px;
+}
+
+.sidebar hr {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    width: 100%;
+}
