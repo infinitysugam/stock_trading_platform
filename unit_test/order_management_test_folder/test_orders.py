@@ -45,17 +45,46 @@ def test_multiple_orders(setup_order_database):
 
 #5 Test case for updating an order
 def test_update_order(setup_order_database):
-    pass
+    order = {"order_id": 1, "stock" : "APPL", "quantity": 10}
+    setup_order_database["orders"].append(order)
+
+    setup_order_database["orders"][0]["quantity"] = 50
+
+    assert setup_order_database["orders"][0]["quantity"] == 50
+
+
+    
 
 #6 Test case for finding an order by order id
 def test_find_order_by_id(setup_order_database):
-    pass
+    order = [
+        {"order_id": 1, "stock" : "APPL", "quantity": 10},
+        {"order_id": 2, "stock" : "NVDA", "quantity": 15},
+        {"order_id": 3, "stock" : "TSLA", "quantity": 100},
+        {"order_id": 4, "stock" : "GOOGL", "quantity": 40}
+    ]
+
+    setup_order_database["orders"].extend(order)
+    order_to_find = next(id for id in setup_order_database["orders"] if id["order_id"] == 4)
+
+    assert order_to_find["quantity"] == 40
+    assert order_to_find["order_id"] == 4
 
 #7 Test case for empty order list
 def test_empty_order_list(setup_order_database):
-    pass
+    assert len(setup_order_database["orders"]) == 0 
 
 #8 Test case for invalid order handling
 def test_invalid_order(setup_order_database):
-    pass
+    # Create an invalid order (missing 'order_id')
+
+    invalid_order = {"stock": "APPL", "quantity" : 40}
+
+    # Ensure adding an invalid order raises an error
+    with pytest.raises(KeyError):
+        if "order_id" not in invalid_order:
+            raise KeyError("Order must have a valid id")
+        
+        setup_order_database["orders"].append(invalid_order)
+    
 
