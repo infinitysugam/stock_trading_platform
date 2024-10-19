@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'market_overwatch.apps.MarketOverwatchConfig',
+    'news_aggregator',
 ]
 
 MIDDLEWARE = [
@@ -75,16 +76,29 @@ WSGI_APPLICATION = 'stock_trading.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'stock_trading',
+#         'USER':'root',
+#         'PASSWORD':'root',
+#         'HOST' : 'mysql-db',
+#         # 'HOST':'127.0.0.1',             Junesh changed it to mysql-db to test docker
+#         'PORT':'3306'
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'stock_trading',
-        'USER':'root',
-        'PASSWORD':'root',
-        'HOST':'127.0.0.1',
-        'PORT':'3306'
+        'NAME': 'stock_db',  # Use the database name specified in the MySQL container
+        'USER': 'root',       # The user you set in the MySQL container
+        'PASSWORD': 'rootpassword',  # The password you set for the root user
+        'HOST': 'mysql-db',   # This should be the name of the MySQL container
+        'PORT': '3306',       # Default MySQL port
     }
 }
+
 
 
 # Password validation
