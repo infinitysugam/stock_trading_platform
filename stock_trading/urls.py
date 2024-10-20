@@ -29,4 +29,5 @@ urlpatterns = [
     path('register/',user_views.register,name='register'),
     # path('news/',include('news_aggregator.urls')),
     path('news/', include('news_aggregator.urls')),  # Include the URLs for the news_aggregator app
+    path('crypto/',include('cryptocurrency_market.urls')),
 ]
