@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'market_overwatch.apps.MarketOverwatchConfig',
     'news_aggregator',
     'cryptocurrency_market',
+    'order_management'
 ]
 
 MIDDLEWARE = [
