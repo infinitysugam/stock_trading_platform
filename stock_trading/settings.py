@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'market_overwatch.apps.MarketOverwatchConfig',
+    'order_management.apps.OrderManagementConfig',
 ]
 
 MIDDLEWARE = [
