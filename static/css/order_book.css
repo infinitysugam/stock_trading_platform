@@ -1,0 +1,58 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    color: #ffffff;
+}
+
+form {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+select {
+    padding: 5px;
+    font-size: 16px;
+}
+
+table {
+    width: 50%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    text-align: right; /* Align all numeric data to the right */
+}
+
+th, td {
+    padding: 10px;
+}
+
+th {
+    background-color: #2d2d2d;
+    color: #ffffff;
+    border-bottom: 1px solid #444;
+}
+
+td {
+    border-bottom: 1px solid #444;
+}
+
+.ask {
+    color: #ff4d4d; /* Red for asks */
+}
+
+.bid {
+    color: #4caf50; /* Green for bids */
+}
+
+.spread {
+    text-align: center;
+    background-color: #2d2d2d;
+    color: #f2f2f2;
+    font-weight: bold;
+}
