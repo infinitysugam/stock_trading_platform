@@ -31,5 +31,4 @@ urlpatterns = [
     path('order_management/',order_views.order_book_view,name='order_management'),
     path('profile/',user_views.profile,name='profile'),
     path('portfolio_management/',portfolio_views.portfolio,name='portfolio_management')
-
 ]
