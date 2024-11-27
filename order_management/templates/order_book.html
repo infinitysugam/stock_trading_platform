@@ -4,126 +4,150 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/order_book.css' %}">
 
 
-    <h1>Order Book</h1>
+    <h2 style="margin: 30px 0px 0px 20px;">Order Book</h2>
     
     <!-- Dropdown for selecting instruments -->
     <form method="get" action="{% url 'order_management' %}">
-        <label for="instrument">Select Instrument:</label>
-        <select name="instrument" id="instrument" onchange="this.form.submit()">
-            <option value="EUR_USD" {% if instrument == "EUR_USD" %}selected{% endif %}>EUR/USD</option>
-            <option value="GBP_USD" {% if instrument == "GBP_USD" %}selected{% endif %}>GBP/USD</option>
-            <option value="USD_JPY" {% if instrument == "USD_JPY" %}selected{% endif %}>USD/JPY</option>
-            <option value="AUD_USD" {% if instrument == "AUD_USD" %}selected{% endif %}>AUD/USD</option>
-        </select>
+        <div class="instrument-selector">
+            <label for="instrument" class="instrument-label">Select Instrument</label>
+            <select name="instrument" id="instrument" class="instrument-dropdown" onchange="this.form.submit()">
+                <option value="EUR_USD" {% if instrument == "EUR_USD" %}selected{% endif %}>EUR/USD</option>
+                <option value="GBP_USD" {% if instrument == "GBP_USD" %}selected{% endif %}>GBP/USD</option>
+                <option value="USD_JPY" {% if instrument == "USD_JPY" %}selected{% endif %}>USD/JPY</option>
+                <option value="AUD_USD" {% if instrument == "AUD_USD" %}selected{% endif %}>AUD/USD</option>
+            </select>
+        </div>
+        
     </form>
 
+    <div class="order-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Price</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Asks at the top -->
+                {% for ask in asks %}
+                <tr>
+                    <td class="ask">{{ ask.price }}</td>
+                    <td class="ask">{{ ask.liquidity }}</td>
+                </tr>
+                {% endfor %}
+    
+                <!-- Spread Row -->
+                <tr>
+                    <td colspan="2" class="spread">Spread: {{ spread }}</td>
+                </tr>
+    
+                <!-- Bids at the bottom -->
+                {% for bid in bids %}
+                <tr>
+                    <td class="bid">{{ bid.price }}</td>
+                    <td class="bid">{{ bid.liquidity }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    <div class="order-cont1">
+        <h4 style="margin: 20px 0px 0px 30px">Place an Order</h4>
+        <form method="post" action="{% url 'order_management' %}">
+            {% csrf_token %}
+            <!-- Order Type Buttons -->
+            <div class="order-type-buttons">
+                <input type="radio" id="buy" name="order_type" value="buy" required>
+                <label for="buy" class="btn-buy">Buy</label>
+        
+                <input type="radio" id="sell" name="order_type" value="sell" required>
+                <label for="sell" class="btn-sell">Sell</label>
+            </div>
+            <br>
+        
+            <!-- Price and Quantity Side by Side -->
+            <div class="input-row">
+                <div class="input-group">
+                    <label for="price">Price</label>
+                    <input type="number" id="price" name="price" step="0.00001" required>
+                </div>
+                <div class="input-group">
+                    <label for="quantity">Quantity</label>
+                    <input type="number" id="quantity" name="quantity" step="1" required>
+                </div>
+            </div>
+            <br>
+        
+            <!-- Hidden Instrument Field -->
+            <input type="hidden" name="instrument" value="{{ instrument }}">
+        
+            <!-- Submit Button -->
+            <button type="submit" class="btn-submit">Place Order</button>
+        </form>
+        
+        
+    
+    
+        <h4 style="margin: 20px 0px 0px 30px">Transaction History</h4>
     <table>
         <thead>
             <tr>
+                <th>Order Type</th>
+                <th>Instrument</th>
                 <th>Price</th>
-                <th>Amount</th>
+                <th>Quantity</th>
+                <th>Filled Quantity</th>
+                <th>Left Quantity</th>
+                <th>Status</th>
+                <th>Timestamp</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Asks at the top -->
-            {% for ask in asks %}
+            {% for order in page_obj %}
             <tr>
-                <td class="ask">{{ ask.price }}</td>
-                <td class="ask">{{ ask.liquidity }}</td>
+                <td>{{ order.order_type|title }}</td>
+                <td>{{ order.instrument }}</td>
+                <td>{{ order.price }}</td>
+                <td>{{ order.quantity }}</td>
+                <td>{{ order.filled_quantity }}</td>
+                <td>{{ order.remaining_quantity}}</td>
+                <td>{{ order.status|title }}</td>
+                <td>{{ order.timestamp }}</td>
             </tr>
-            {% endfor %}
-
-            <!-- Spread Row -->
+            {% empty %}
             <tr>
-                <td colspan="2" class="spread">Spread: {{ spread }}</td>
-            </tr>
-
-            <!-- Bids at the bottom -->
-            {% for bid in bids %}
-            <tr>
-                <td class="bid">{{ bid.price }}</td>
-                <td class="bid">{{ bid.liquidity }}</td>
+                <td colspan="7" style="text-align: center;">No orders found.</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-
-
-    <h2>Place an Order</h2>
-    <form method="post" action="{% url 'order_management' %}">
-        {% csrf_token %}
-        <label for="order_type">Order Type:</label>
-        <select name="order_type" id="order_type">
-            <option value="buy">Buy</option>
-            <option value="sell">Sell</option>
-        </select>
-        <br><br>
     
-        <label for="price">Price:</label>
-        <input type="number" id="price" name="price" step="0.00001" required>
-        <br><br>
+    <!-- Pagination Controls -->
+    <div style="text-align: center; margin-top: 20px;">
+        <span>
+            {% if page_obj.has_previous %}
+                <a href="?page=1{% if instrument %}&instrument={{ instrument }}{% endif %}">First</a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if instrument %}&instrument={{ instrument }}{% endif %}">Previous</a>
+            {% endif %}
     
-        <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" name="quantity" step="1" required>
-        <br><br>
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
     
-        <!-- Use the selected instrument dynamically -->
-        <input type="hidden" name="instrument" value="{{ instrument }}">
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if instrument %}&instrument={{ instrument }}{% endif %}">Next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}{% if instrument %}&instrument={{ instrument }}{% endif %}">Last</a>
+            {% endif %}
+        </span>
+    </div>
+
+    </div>
     
-        <button type="submit">Place Order</button>
-    </form>
+    
+  
+    
 
+    </div>
 
-    <h2>Transaction History</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Order Type</th>
-            <th>Instrument</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Filled Quantity</th>
-            <th>Left Quantity</th>
-            <th>Status</th>
-            <th>Timestamp</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for order in page_obj %}
-        <tr>
-            <td>{{ order.order_type|title }}</td>
-            <td>{{ order.instrument }}</td>
-            <td>{{ order.price }}</td>
-            <td>{{ order.quantity }}</td>
-            <td>{{ order.filled_quantity }}</td>
-            <td>{{ order.remaining_quantity}}</td>
-            <td>{{ order.status|title }}</td>
-            <td>{{ order.timestamp }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="7" style="text-align: center;">No orders found.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-<!-- Pagination Controls -->
-<div style="text-align: center; margin-top: 20px;">
-    <span>
-        {% if page_obj.has_previous %}
-            <a href="?page=1{% if instrument %}&instrument={{ instrument }}{% endif %}">First</a>
-            <a href="?page={{ page_obj.previous_page_number }}{% if instrument %}&instrument={{ instrument }}{% endif %}">Previous</a>
-        {% endif %}
-
-        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}{% if instrument %}&instrument={{ instrument }}{% endif %}">Next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}{% if instrument %}&instrument={{ instrument }}{% endif %}">Last</a>
-        {% endif %}
-    </span>
-</div>
-
+  
 
 {% endblock %}
