@@ -20,6 +20,7 @@ from market_overwatch import views as market_overwatch_views
 from django.contrib.auth import views as auth_views
 from users import views as user_views
 from order_management import views as order_views
+from portfolio_management import views as portfolio_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +29,6 @@ urlpatterns = [
     path('logout/',auth_views.LogoutView.as_view(template_name='logout.html'),name='logout'),
     path('register/',user_views.register,name='register'),
     path('order_management/',order_views.order_book_view,name='order_management'),
-    path('profile/',user_views.profile,name='profile')
-
+    path('profile/',user_views.profile,name='profile'),
+    path('portfolio_management/',portfolio_views.portfolio,name='portfolio_management')
 ]
