@@ -30,5 +30,4 @@ urlpatterns = [
     path('order_management/',order_views.home,name='order_management'),
     path('profile/',user_views.profile,name='profile')
 
-
 ]
