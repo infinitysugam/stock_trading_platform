@@ -1,4 +1,6 @@
 */__pycache__/*
-*.pyc
+*/*.*.pyc
 venv/*
 .vscode/*
+
+stock_trading/__pycache__/settings.cpython-310.pyc

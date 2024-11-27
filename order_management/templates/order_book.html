@@ -3,67 +3,7 @@
 {% block content %} 
 <link rel="stylesheet" type="text/css" href="{% static 'css/order_book.css' %}">
 
-        <!-- body {
-            font-family: Arial, sans-serif;
-            background-color: #1a1a1a;
-            color: #ffffff;
-            margin: 0;
-            padding: 0;
-        }
 
-        h1 {
-            text-align: center;
-            color: #ffffff;
-        }
-
-        form {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        select {
-            padding: 5px;
-            font-size: 16px;
-        }
-
-        table {
-            width: 50%;
-            margin: 20px auto;
-            border-collapse: collapse;
-            text-align: right; /* Align all numeric data to the right */
-        }
-
-        th, td {
-            padding: 10px;
-        }
-
-        th {
-            background-color: #2d2d2d;
-            color: #ffffff;
-            border-bottom: 1px solid #444;
-        }
-
-        td {
-            border-bottom: 1px solid #444;
-        }
-
-        .ask {
-            color: #ff4d4d; /* Red for asks */
-        }
-
-        .bid {
-            color: #4caf50; /* Green for bids */
-        }
-
-        .spread {
-            text-align: center;
-            background-color: #2d2d2d;
-            color: #f2f2f2;
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body> -->
     <h1>Order Book</h1>
     
     <!-- Dropdown for selecting instruments -->
@@ -132,8 +72,58 @@
     
         <button type="submit">Place Order</button>
     </form>
-<!-- </body>
-</html> -->
+
+
+    <h2>Transaction History</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Order Type</th>
+            <th>Instrument</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Filled Quantity</th>
+            <th>Left Quantity</th>
+            <th>Status</th>
+            <th>Timestamp</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in page_obj %}
+        <tr>
+            <td>{{ order.order_type|title }}</td>
+            <td>{{ order.instrument }}</td>
+            <td>{{ order.price }}</td>
+            <td>{{ order.quantity }}</td>
+            <td>{{ order.filled_quantity }}</td>
+            <td>{{ order.remaining_quantity}}</td>
+            <td>{{ order.status|title }}</td>
+            <td>{{ order.timestamp }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7" style="text-align: center;">No orders found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Pagination Controls -->
+<div style="text-align: center; margin-top: 20px;">
+    <span>
+        {% if page_obj.has_previous %}
+            <a href="?page=1{% if instrument %}&instrument={{ instrument }}{% endif %}">First</a>
+            <a href="?page={{ page_obj.previous_page_number }}{% if instrument %}&instrument={{ instrument }}{% endif %}">Previous</a>
+        {% endif %}
+
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if instrument %}&instrument={{ instrument }}{% endif %}">Next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}{% if instrument %}&instrument={{ instrument }}{% endif %}">Last</a>
+        {% endif %}
+    </span>
+</div>
 
 
 {% endblock %}
