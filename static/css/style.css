@@ -10,6 +10,7 @@
     white-space: nowrap; /* Prevent text wrapping inside the sidebar */
     overflow: hidden; /* Hide any overflow if the text is too long */
     text-overflow: ellipsis; /* Add ellipsis for overflowed text */
+
 }
 
 .nav-item-user a{
@@ -52,7 +53,7 @@
 .sidebar .nav-link {
     display: flex;
     align-items: center;
-    color: #ffffffb3; /* Slightly dimmed white */
+    color: #f0f1f3; /* Slightly dimmed white */
     padding: 10px 5px;
     transition: all 0.3s ease; /* Smooth animation on hover */
 }
@@ -73,8 +74,10 @@
 }
 
 .row{
-    background-image: linear-gradient(162deg, #252b40, #9b5c5c14);
+    background: #0c0d12;
+    
 }
+
 
 
 /* Container for the logo to control size and position */
@@ -87,8 +90,9 @@
 
 /* Styling for the spinning infinity logo */
 .infinity-logo {
-    width: 40px; /* Adjust size as needed */
-    height: 40px;
+    width: 60px; /* Adjust size as needed */
+    height: 60px;
+    margin:15px -1px -5px 0px;
     animation: spin 3s linear infinite; /* Spin animation */
 }
 
@@ -111,6 +115,7 @@
 .tradingview-widget-container {
     flex: 1; /* Allow items to grow */
     padding: 10px; /* Optional padding for better spacing */
+    height:55px
 }
 
 .chart1 {
@@ -125,5 +130,10 @@
 .tradingview-widget-container__widget {
     height: 100%;
     width: 100%;
+}
+
+
+.profile{
+    margin: 4px 2px 4px 2px;
 }
 
