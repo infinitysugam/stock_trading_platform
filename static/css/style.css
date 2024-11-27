@@ -3,6 +3,7 @@
     width: 100px; /* Adjust the width as needed */
     padding: 0;   /* Remove padding to keep the content inside */
     overflow-x: hidden; /* Prevent horizontal overflow */
+    background: #0a1016;
 }
 
 .nav-item a {
@@ -32,7 +33,7 @@
 
 .infinity-logo {
     max-width: 100%; /* Ensure logo fits within the container */
-    animation: spin 5s linear infinite; /* Optional spinning effect */
+    /* animation: spin 5s linear infinite; Optional spinning effect */
 }
 
 /* Optional spinning effect for the logo */
@@ -90,10 +91,10 @@
 
 /* Styling for the spinning infinity logo */
 .infinity-logo {
-    width: 60px; /* Adjust size as needed */
+    width: 140px; /* Adjust size as needed */
     height: 60px;
     margin:15px -1px -5px 0px;
-    animation: spin 3s linear infinite; /* Spin animation */
+    /* animation: spin 3s linear infinite;  */
 }
 
 /* Keyframes for the spin animation */
@@ -109,7 +110,8 @@
 
 .charts-container {
     display: flex; /* Use flexbox to align items side by side */
-    height: 90%; /* Ensure container takes full height */
+    height: 88%; /* Ensure container takes full height */
+    
 }
 
 .tradingview-widget-container {
@@ -137,3 +139,47 @@
     margin: 4px 2px 4px 2px;
 }
 
+.profileIcon{
+    width: 98%;
+    display: flex;
+    flex-direction: row-reverse;
+
+}
+
+.container {
+    display: flex;
+    flex-direction: column; /* Stack rows vertically */
+    height: 85%; /* Full viewport height */
+    margin: 20px 0px 0px 10px;
+}
+
+.row {
+    flex: 1; /* Equal height for rows */
+    display: flex;
+    
+}
+
+/* First row: Two equal columns */
+.first-row .col {
+    flex: 1; /* Equal width for columns */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #090909; /* Optional border for clarity */
+    background-color: #111111; /* Background color for columns */
+}
+
+/* Second row: Single full-width column */
+.second-row .col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #0a0a0a; /* Optional border for clarity */
+    background-color: #0a0a0a; /* Background color for row */
+}
+
+/* Optional text alignment for demonstration */
+p {
+    font-size: 1.2rem;
+    color: #333;
+}

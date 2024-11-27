@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %} 
+
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<div class="container">
+    <!-- First Row -->
+    <div class="row first-row">
+        <div class="col half-column">
+            <!-- Content for the first column -->
+            <p>Total Balance Amount :</p>
+        </div>
+        <div class="col half-column">
+            <!-- Content for the second column -->
+            <p>Second Column</p>
+        </div>
+    </div>
+
+    <!-- Second Row -->
+    <div class="row second-row">
+        <div class="col full-column">
+            <!-- Content for the second row -->
+            <p>Second Row Content</p>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
