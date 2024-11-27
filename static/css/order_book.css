@@ -6,14 +6,23 @@ body {
     padding: 0;
 }
 
-h1 {
-    text-align: center;
+h2 {
+    text-align: left; 
+    margin: 20px 0px 0px 20px;
+    color: #ffffff;
+}
+
+.h4 {
+    text-align: left; 
+    margin: 20px 0px 0px 20px;
     color: #ffffff;
 }
 
 form {
-    text-align: center;
-    margin-bottom: 20px;
+    font-size: medium;
+    font-weight:700;
+    text-align: left;
+    margin: 20px 0px 0px 20px;
 }
 
 select {
@@ -23,10 +32,141 @@ select {
 
 table {
     width: 50%;
-    margin: 20px auto;
+    margin: 20px 0px 0px 20px;
     border-collapse: collapse;
     text-align: right; /* Align all numeric data to the right */
+
+    border-radius: 9px;
+  
 }
+
+/* Styling for the order type buttons */
+.order-type-buttons {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+}
+
+.order-type-buttons input[type="radio"] {
+    display: none; /* Hide default radio buttons */
+}
+
+.order-type-buttons label {
+    flex: 1; /* Ensure both buttons take equal space */
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Buy button styles */
+.btn-buy {
+    background-color: #f0f0f0; /* Default light gray */
+    color: black;
+}
+
+.order-type-buttons input[type="radio"]:checked + .btn-buy {
+    background-color: #4caf50; /* Green when selected */
+    color: white;
+    border-color: #4caf50;
+}
+
+/* Sell button styles */
+.btn-sell {
+    background-color: #f0f0f0; /* Default light gray */
+    color: black;
+}
+
+.order-type-buttons input[type="radio"]:checked + .btn-sell {
+    background-color: #f44336; /* Red when selected */
+    color: white;
+    border-color: #f44336;
+}
+
+/* Add a hover effect for better interactivity */
+.order-type-buttons label:hover {
+    background-color: #e0e0e0; /* Slightly darker gray */
+
+}
+
+/* Form container styling */
+form {
+
+    margin: 12px 0px 0px 10px;
+    padding: 20px;
+    background-color: #101016;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Order type buttons styling */
+.order-type-buttons {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+    justify-content: center; /* Center align the buttons */
+    margin-bottom: 20px;
+}
+
+/* Shared input group styling */
+.input-row {
+    display: flex;
+    gap: 20px; /* Space between price and quantity */
+    justify-content: space-between; /* Equal space between fields */
+}
+
+.input-group {
+    flex: 1; /* Make both fields take up equal width */
+    display: flex;
+    flex-direction: column; /* Label on top, input below */
+}
+
+.input-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+   
+}
+
+.input-group input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.input-group input:focus {
+    border-color: #4caf50; /* Highlight border on focus */
+}
+
+/* Submit button styling */
+.btn-submit {
+    display: block;
+    width: 100%;
+    background: linear-gradient(135deg, #4caf50, #81c784); /* Gradient for button */
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    transition: all 0.3s ease;
+    margin-top: 20px; /* Space above button */
+}
+
+.btn-submit:hover {
+    background: linear-gradient(135deg, #388e3c, #66bb6a); /* Darker gradient on hover */
+    transform: scale(1.05); /* Slight zoom */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
+}
+
+
+
 
 th, td {
     padding: 10px;
@@ -55,4 +195,62 @@ td {
     background-color: #2d2d2d;
     color: #f2f2f2;
     font-weight: bold;
+}
+
+.order-container{
+    display: flex;
+    
+}
+
+.order-cont1{
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Instrument selector container */
+.instrument-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Space between label and dropdown */
+    margin-bottom: 20px;
+}
+
+/* Label styling */
+.instrument-label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fefafa;
+    margin-bottom: 5px;
+}
+
+/* Dropdown styling */
+.instrument-dropdown {
+    width: 100%;
+    max-width: 300px; /* Optional: Limit width for larger containers */
+    padding: 10px;
+    font-size: 1rem;
+    color: #636262;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    appearance: none; /* Removes default dropdown arrow for styling */
+}
+
+/* Add a custom arrow for dropdown */
+.instrument-dropdown {
+    background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"%3E%3Cpath fill="%23333" d="M0 0h10L5 6z"/%3E%3C/svg%3E') no-repeat right 10px center;
+    background-size: 12px;
+}
+
+/* Hover and focus states */
+.instrument-dropdown:hover {
+    border-color: #4caf50; /* Green border on hover */
+}
+
+.instrument-dropdown:focus {
+    border-color: #4caf50; /* Green border on focus */
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* Soft green glow */
 }
