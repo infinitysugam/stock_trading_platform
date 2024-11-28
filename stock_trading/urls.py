@@ -34,5 +34,6 @@ urlpatterns = [
     path('profile/',user_views.profile,name='profile'),
     path('portfolio_management/',portfolio_views.portfolio,name='portfolio_management'),
     path('risk_management/',risk_views.home,name='risk_management'),
+    path('update_stop_loss/',risk_views.update_stop_loss,name='update_stop_loss'),
     path('algorithmic_trading/',algo_views.home,name='algorithmic_trading')
 ]

@@ -45,7 +45,8 @@
                         <th>Name</th>
                         <th>Quantity</th>
                         <th>Average Price</th>
-                        <th>Last Updated</th>
+                        <th>Current Price</th>
+                        <th>Returns</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,6 +55,21 @@
                         <td>{{ portfolio.instrument }}</td>
                         <td>{{ portfolio.quantity }}</td>
                         <td>{{ portfolio.average_price }}</td>
+                        <td>{{ portfolio.current_price|floatformat:4 }}</td>
+                        <td>
+                            {% if portfolio.returns != 'N/A' %}
+                            <span style="color: {% if portfolio.returns > 0 %}green{% else %}red{% endif %};">
+                                {% if portfolio.returns > 0 %}
+                                    ▲
+                                {% elif portfolio.returns < 0 %}
+                                    ▼
+                                {% endif %}
+                                ${{ portfolio.abs_returns|floatformat:2 }} <!-- Use absolute value for display -->
+                            </span>
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </td>
                     </tr>
                     {% empty %}
                     <tr>
