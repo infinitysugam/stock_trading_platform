@@ -17,8 +17,24 @@
 
         </div>
         <div class="c2 col half-column">
-            <!-- Content for the second column -->
-            <p>Second Column</p>
+              <!-- Deposit Section -->
+              <div class="deposit-section">
+                <h3>Deposit Amount</h3>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="number" name="deposit_amount" step="0.01" placeholder="Enter amount to deposit" required>
+                    <button type="submit" class="deposit-btn">Deposit</button>
+                </form>
+                <!-- Display success/error messages -->
+                {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                    <p class="{{ message.tags }}">{{ message }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+           
         </div>
     </div>
         <!-- Second Row -->
