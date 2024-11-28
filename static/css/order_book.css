@@ -1,256 +1,202 @@
+/* General Styling */
 body {
     font-family: Arial, sans-serif;
-    background-color: #1a1a1a;
+    background-color: #0f0f0f;
     color: #ffffff;
     margin: 0;
     padding: 0;
 }
 
-h2 {
-    text-align: left; 
-    margin: 20px 0px 0px 20px;
-    color: #ffffff;
-}
-
-.h4 {
-    text-align: left; 
-    margin: 20px 0px 0px 20px;
-    color: #ffffff;
-}
-
-form {
-    font-size: medium;
-    font-weight:700;
-    text-align: left;
-    margin: 20px 0px 0px 20px;
-}
-
-select {
-    padding: 5px;
-    font-size: 16px;
-}
-
-table {
-    width: 50%;
-    margin: 20px 0px 0px 20px;
-    border-collapse: collapse;
-    text-align: right; /* Align all numeric data to the right */
-
-    border-radius: 9px;
-  
-}
-
-/* Styling for the order type buttons */
-.order-type-buttons {
+/* Layout */
+.main-container {
     display: flex;
-    gap: 10px; /* Space between buttons */
-}
-
-.order-type-buttons input[type="radio"] {
-    display: none; /* Hide default radio buttons */
-}
-
-.order-type-buttons label {
-    flex: 1; /* Ensure both buttons take equal space */
-    padding: 10px 20px;
-    text-align: center;
-    font-size: 1rem;
-    font-weight: bold;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-/* Buy button styles */
-.btn-buy {
-    background-color: #f0f0f0; /* Default light gray */
-    color: black;
-}
-
-.order-type-buttons input[type="radio"]:checked + .btn-buy {
-    background-color: #4caf50; /* Green when selected */
-    color: white;
-    border-color: #4caf50;
-}
-
-/* Sell button styles */
-.btn-sell {
-    background-color: #f0f0f0; /* Default light gray */
-    color: black;
-}
-
-.order-type-buttons input[type="radio"]:checked + .btn-sell {
-    background-color: #f44336; /* Red when selected */
-    color: white;
-    border-color: #f44336;
-}
-
-/* Add a hover effect for better interactivity */
-.order-type-buttons label:hover {
-    background-color: #e0e0e0; /* Slightly darker gray */
-
-}
-
-/* Form container styling */
-form {
-
-    margin: 12px 0px 0px 10px;
+    flex-direction: column;
+    gap: 20px;
     padding: 20px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.column {
     background-color: #101016;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Order type buttons styling */
-.order-type-buttons {
-    display: flex;
-    gap: 10px; /* Space between buttons */
-    justify-content: center; /* Center align the buttons */
-    margin-bottom: 20px;
-}
-
-/* Shared input group styling */
-.input-row {
-    display: flex;
-    gap: 20px; /* Space between price and quantity */
-    justify-content: space-between; /* Equal space between fields */
-}
-
-.input-group {
-    flex: 1; /* Make both fields take up equal width */
-    display: flex;
-    flex-direction: column; /* Label on top, input below */
-}
-
-.input-group label {
-    font-weight: bold;
-    margin-bottom: 5px;
-   
-}
-
-.input-group input {
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    outline: none;
-    transition: border-color 0.3s ease;
-}
-
-.input-group input:focus {
-    border-color: #4caf50; /* Highlight border on focus */
-}
-
-/* Submit button styling */
-.btn-submit {
-    display: block;
-    width: 100%;
-    background: linear-gradient(135deg, #4caf50, #81c784); /* Gradient for button */
-    color: white;
-    font-size: 1rem;
-    font-weight: bold;
-    border: none;
+    padding: 20px;
     border-radius: 8px;
-    padding: 10px 20px;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-    transition: all 0.3s ease;
-    margin-top: 20px; /* Space above button */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    flex: 1;
+    min-width: 300px;
 }
 
-.btn-submit:hover {
-    background: linear-gradient(135deg, #388e3c, #66bb6a); /* Darker gradient on hover */
-    transform: scale(1.05); /* Slight zoom */
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
+/* Order Book Table */
+
+.order-book{
+    height: 40%;
+width: 100%;
 }
 
-
-
-
-th, td {
-    padding: 10px;
-}
-
-th {
-    background-color: #2d2d2d;
+.order-book th {
+    background-color: #1a1e23;
     color: #ffffff;
-    border-bottom: 1px solid #444;
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+    
 }
 
-td {
-    border-bottom: 1px solid #444;
+.order-book td {
+    padding: 10px;
+    text-align: center;
 }
 
-.ask {
-    color: #ff4d4d; /* Red for asks */
+.order-book td.bid {
+    color: #28a745;
+    background-color: rgba(40, 167, 69, 0.15);
 }
 
-.bid {
-    color: #4caf50; /* Green for bids */
+.order-book td.ask {
+    color: #dc3545;
+    background-color: rgba(220, 53, 69, 0.15);
 }
 
 .spread {
     text-align: center;
-    background-color: #2d2d2d;
-    color: #f2f2f2;
     font-weight: bold;
 }
 
-.order-container{
-    display: flex;
-    
+.first-column h2{
+    font-size: 1.5rem;
 }
 
-.order-cont1{
-    display: flex;
-    flex-direction: column;
+/* Place Order Styling */
+.place-order {
+    background-color: #15191e;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    text-align: center;
 }
 
+.place-order h4 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #ffffff;
+}
 
-/* Instrument selector container */
-.instrument-selector {
+.order-type-buttons {
     display: flex;
-    flex-direction: column;
-    gap: 5px; /* Space between label and dropdown */
+    justify-content: space-around;
     margin-bottom: 20px;
 }
 
-/* Label styling */
-.instrument-label {
+.order-type-buttons input[type="radio"] {
+    display: none;
+}
+
+.order-type-buttons label {
+    flex: 1;
+    padding: 12px;
     font-size: 1rem;
     font-weight: bold;
-    color: #fefafa;
-    margin-bottom: 5px;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin: 0 5px;
 }
 
-/* Dropdown styling */
-.instrument-dropdown {
+.btn-buy {
+    background-color: #28a745;
+    color: #ffffff;
+}
+
+.btn-sell {
+    background-color: #dc3545;
+    color: #ffffff;
+}
+
+.order-type-buttons input[type="radio"]:checked + .btn-buy {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+.order-type-buttons input[type="radio"]:checked + .btn-sell {
+    background-color: #c82333;
+    transform: scale(1.05);
+}
+
+/* Input Row */
+.input-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-group label {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #dcdcdc;
+    text-align: left;
     width: 100%;
-    max-width: 300px; /* Optional: Limit width for larger containers */
+}
+
+.input-group input {
+    width: 90%;
     padding: 10px;
     font-size: 1rem;
-    color: #636262;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
+    border: 1px solid #444;
     border-radius: 5px;
+    background-color: #1e1e1e;
+    color: #ffffff;
     outline: none;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    appearance: none; /* Removes default dropdown arrow for styling */
 }
 
-/* Add a custom arrow for dropdown */
-.instrument-dropdown {
-    background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"%3E%3Cpath fill="%23333" d="M0 0h10L5 6z"/%3E%3C/svg%3E') no-repeat right 10px center;
-    background-size: 12px;
+.input-group input:focus {
+    border-color: #4caf50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
 }
 
-/* Hover and focus states */
-.instrument-dropdown:hover {
-    border-color: #4caf50; /* Green border on hover */
+/* Submit Button */
+.btn-submit {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, #28a745, #4caf50);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.instrument-dropdown:focus {
-    border-color: #4caf50; /* Green border on focus */
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* Soft green glow */
+.btn-submit:hover {
+    background: linear-gradient(135deg, #218838, #43a047);
+    transform: scale(1.05);
 }
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .row {
+        flex-direction: column;
+    }
+
+    .input-row {
+        flex-direction: column;
+    }
+}
+
