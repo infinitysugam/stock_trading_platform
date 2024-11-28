@@ -4,5 +4,6 @@
 __pycache__/
 venv/*
 .vscode/*
+portfolio_management/migrations/*
 
 stock_trading/__pycache__/settings.cpython-310.pyc
