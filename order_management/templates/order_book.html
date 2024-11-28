@@ -4,7 +4,6 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/order_book.css' %}">
 
-
 <div class="main-container">
     <!-- First Row -->
     <div class="row first-row">
@@ -44,7 +43,7 @@
         <div class="column second-column">
             <form method="get" action="{% url 'order_management' %}">
                 <div class="instrument-selector">
-                    <label for="instrument" class="instrument-label">Select Instrument</label>
+
                     <select name="instrument" id="instrument" class="instrument-dropdown" onchange="this.form.submit()">
                         <option value="EUR_USD" {% if instrument == "EUR_USD" %}selected{% endif %}>EUR/USD</option>
                         <option value="GBP_USD" {% if instrument == "GBP_USD" %}selected{% endif %}>GBP/USD</option>
@@ -108,13 +107,6 @@
 
                     <!-- Submit Button -->
                     <button type="submit" class="btn-submit">Place Order</button>
-                    {% if messages %}
-                        <ul class="messages">
-                            {% for message in messages %}
-                                <li class="{{ message.tags }}">{{ message }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
                 </form>
             </div>
         </div>
