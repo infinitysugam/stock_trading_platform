@@ -2,6 +2,7 @@ from django.shortcuts import render,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from order_management.models import Order
 from .models import AmountDetails,Portfolio
+from .get_current_price import price
 
 # Create your views here.
 
@@ -19,11 +20,16 @@ def portfolio(request):
     
     portfolios = Portfolio.objects.filter(user=request.user)
 
+    instrument_list = [portfolio.instrument for portfolio in portfolios]
+    instrument_string = ",".join(instrument_list)
+    current_prices = price(instrument_string) 
+
     # Pass the deposited amount to the template
     context = {
         'cash_left': cash_left,
         'invested_amount':invested_amount,
         'portfolios': portfolios,
+        'current_prices':current_prices,
     }
     return render(request,'portifolio.html',context)            
 

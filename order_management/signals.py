@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save,post_delete
 from django.dispatch import receiver
 from .models import Order
-from portfolio_management.models import Portfolio
+from portfolio_management.models import Portfolio,AmountDetails
 
 from decimal import Decimal
 
@@ -19,9 +19,16 @@ def update_portfolio(sender, instance, **kwargs):
     order_quantity = instance.quantity
     order_price = Decimal(instance.price)
     filled_quantity = Decimal(instance.filled_quantity)
+    total_cost = order_price * filled_quantity
 
     # Only update portfolio for filled or partially filled orders
     if instance.status in ['filled', 'partially_filled']:
+
+
+        amount_details, created = AmountDetails.objects.get_or_create(
+        user=user,
+        defaults={'cash_amount': 0, 'used_amount': 0}
+    )
         portfolio, created = Portfolio.objects.get_or_create(
             user=user,
             instrument=instrument,
@@ -37,6 +44,10 @@ def update_portfolio(sender, instance, **kwargs):
             ) / total_quantity
             portfolio.quantity = total_quantity
 
+
+            amount_details.cash_amount -= total_cost
+            amount_details.used_amount += total_cost
+
         elif order_type == 'sell':
             # Deduct quantity for sell orders
             portfolio.quantity -= filled_quantity
@@ -45,9 +56,13 @@ def update_portfolio(sender, instance, **kwargs):
                 portfolio.quantity = 0
                 portfolio.average_price = Decimal(0.0)  # Reset average price if no holdings
 
-        print(portfolio.quantity)
+            amount_details.cash_amount += total_cost
+            amount_details.used_amount -= total_cost
+
+        #print(portfolio.quantity)
 
         portfolio.save()
+        amount_details.save()
 
 
 
