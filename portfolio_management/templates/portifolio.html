@@ -3,29 +3,46 @@
 {% block content %} 
 
 
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/portfolio.css' %}">
 
 <div class="container">
     <!-- First Row -->
-    <div class="row first-row">
-        <div class="col half-column">
+    <div class="r1 row first-row">
+        <div class="c1 col half-column">
             <!-- Content for the first column -->
-            <p> Cash Amount Left : ${{ cash_left }}</p>
-            <p> Invested Amount : ${{ invested_amount }} </p>
+            <div class="ptag1">
+                <span style="margin-top: 4%;">Total Amount</span>
+                <span class="cashnum">${{ cash_left }}</span>
+            </div>
+
         </div>
-        <div class="col half-column">
+        <div class="c2 col half-column">
             <!-- Content for the second column -->
             <p>Second Column</p>
         </div>
     </div>
+        <!-- Second Row -->
+        <div class="r2 row second-row">
+            <div class="c3 col full-column">
+                <div class="ptag">
+                    <span style="margin-top: 4%;">Cash Amount</span>
+                    <span class="cashnum">${{ cash_left }}</span>
+                </div>
+                
+            </div>
+        </div>
 
     <!-- Second Row -->
-    <div class="row second-row">
-        <div class="col full-column">
-            <table>
+    <div class="r3 row second-row">
+        <div class="c4 col full-column">
+            <div class="ptag">
+                <span style="margin-top: 4%;">Invested Amount</span>
+                <span class="cashnum">${{ invested_amount }}</span>
+            </div>
+            <table class="portfolio-table">
                 <thead>
                     <tr>
-                        <th>Instrument</th>
+                        <th>Name</th>
                         <th>Quantity</th>
                         <th>Average Price</th>
                         <th>Last Updated</th>

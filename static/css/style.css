@@ -159,24 +159,7 @@
     
 }
 
-/* First row: Two equal columns */
-.first-row .col {
-    flex: 1; /* Equal width for columns */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #090909; /* Optional border for clarity */
-    background-color: #111111; /* Background color for columns */
-}
 
-/* Second row: Single full-width column */
-.second-row .col {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #0a0a0a; /* Optional border for clarity */
-    background-color: #0a0a0a; /* Background color for row */
-}
 
 /* Optional text alignment for demonstration */
 p {
