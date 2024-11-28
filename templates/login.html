@@ -1,27 +1,38 @@
-{% extends "base.html" %}  
 {% load static %}
-{% block content %}
-<section class="vh-100" style="background-color: #000000;">
-   
-    <div class="container py-5 h-100">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-          <div class="card shadow-2-strong" style="border-radius: 1rem;">
-            <div class="card-body p-5 text-center">
-    
-              <h3 class="mb-5">Sign in</h3>
-              <form method="POST">  
-                {% csrf_token %}
-            {{ form.as_p }}
-            <button class="btn btn-dark btn-lg btn-block" type="submit">Login</button>
-        </form>
-
-
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Login Page</title>
+        <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    </head>
+    <body>
+        <div class="titleText">
+            <h2>SFINIX</h2>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-</section>
-{% endblock %}
 
+        <div class="box">
+            <form class="form" method="POST">
+                {% csrf_token %}
+                <h2>Login</h2>
+                <div class="inputBox">
+                    <input type="text" name="username" required>
+                    <span>Username</span>
+                </div>
+                <div class="inputBox">
+                    <input type="password" name="password" required>
+                    <span>Password</span>
+                </div>
+                <div class="links">
+                    <a href="#">Forgot password?</a>
+                    <a href="/register">Sign Up</a>
+                </div>
+                <br>
+                <br>
+                <div >
+                    <input type="submit" value="Login">
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

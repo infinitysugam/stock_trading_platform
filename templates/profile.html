@@ -1,6 +1,21 @@
-{% extends "all_base.html" %}  
+{% extends "base.html" %}  
 {% load static %}
 {% block content %}
- <h1>{{ user.username }}</h1>
+
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <br>
+        <h3 style="color: aliceblue;">Welcome {{ user.username }}!</h3>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    </head>
+    <body>
+        <div class="profile_body">
+
+        </div>
+    </body>
+</html>
+
 {% endblock %}
 

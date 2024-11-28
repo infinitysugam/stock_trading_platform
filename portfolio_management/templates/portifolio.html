@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %} 
+
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<div class="container">
+    <!-- First Row -->
+    <div class="row first-row">
+        <div class="col half-column">
+            <!-- Content for the first column -->
+            <p> Cash Amount Left : ${{ cash_left }}</p>
+            <p> Invested Amount : ${{ invested_amount }} </p>
+        </div>
+        <div class="col half-column">
+            <!-- Content for the second column -->
+            <p>Second Column</p>
+        </div>
+    </div>
+
+    <!-- Second Row -->
+    <div class="row second-row">
+        <div class="col full-column">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Instrument</th>
+                        <th>Quantity</th>
+                        <th>Average Price</th>
+                        <th>Last Updated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for portfolio in portfolios %}
+                    <tr>
+                        <td>{{ portfolio.instrument }}</td>
+                        <td>{{ portfolio.quantity }}</td>
+                        <td>{{ portfolio.average_price }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" style="text-align: center;">No data available in your portfolio.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
