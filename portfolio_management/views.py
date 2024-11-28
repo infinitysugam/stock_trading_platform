@@ -1,7 +1,7 @@
 from django.shortcuts import render,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from order_management.models import Order
-from .models import DepositAmount
+from .models import AmountDetails,Portfolio
 
 # Create your views here.
 
@@ -10,14 +10,20 @@ def portfolio(request):
         # Ensure the user is authenticated
     if request.user.is_authenticated:
         # Fetch the deposited amount for the logged-in user
-        deposit = DepositAmount.objects.filter(user=request.user).first()
-        deposited_amount = deposit.amount if deposit else 0  # Default to 0 if no deposit exists
+        deposit = AmountDetails.objects.filter(user=request.user).first()
+        cash_left = deposit.cash_amount if deposit else 0  # Default to 0 if no deposit exists
+        invested_amount = deposit.used_amount if deposit else 0
     else:
         deposited_amount = 0
 
+    
+    portfolios = Portfolio.objects.filter(user=request.user)
+
     # Pass the deposited amount to the template
     context = {
-        'deposited_amount': deposited_amount,
+        'cash_left': cash_left,
+        'invested_amount':invested_amount,
+        'portfolios': portfolios,
     }
     return render(request,'portifolio.html',context)            
 

@@ -3,9 +3,10 @@ from django.contrib.auth.models import User
 
 
 
-class DepositAmount(models.Model):
+class AmountDetails(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    amount = models.DecimalField(max_digits=10,decimal_places=5)
+    cash_amount = models.DecimalField(max_digits=50,decimal_places=5)
+    used_amount = models.DecimalField(max_digits=50,decimal_places=5)
 
 
 

@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 
 import oandapyV20
@@ -9,6 +10,7 @@ import oandapyV20.endpoints.pricing as pricing
 import requests
 
 from .models import Order
+from portfolio_management.models import AmountDetails,Portfolio
 
 @login_required
 def home(request):
@@ -46,10 +48,20 @@ def order_book_view(request):
         spread = f"{lowest_ask - highest_bid:.6f}"
 
         if request.method == "POST":
+
+                deposit = AmountDetails.objects.filter(user=request.user).first()
+                cash_left = deposit.cash_amount if deposit else 0  
+
+                portfolio_row = Portfolio.objects.filter(user=request.user,instrument=request.POST.get("instrument")).first()
+                quantity_holding = portfolio_row.quantity if portfolio_row else 0
+
+
                 order_type = request.POST.get("order_type")
                 order_instrument = request.POST.get("instrument")
                 order_price = float(request.POST.get("price"))
                 order_quantity = float(request.POST.get("quantity"))
+
+                
 
                 #print(order_price,order_quantity)
 
@@ -59,43 +71,53 @@ def order_book_view(request):
 
                 # Buy Order Logic
                 if order_type == "buy":
-                        for ask in asks:
-                                ask_price = float(ask["price"])
-                                ask_liquidity = int(ask["liquidity"])
+                        if cash_left<(order_price*order_quantity):
+                        #Logic for deposit
+                                messages.error(request, "Insufficient funds. Please deposit more cash.")
+                                return redirect('order_management')  # Redirect to the same or another page
+                        else:
+                                for ask in asks:
+                                        ask_price = float(ask["price"])
+                                        ask_liquidity = int(ask["liquidity"])
 
-                                if ask_price == order_price:  # Check for matching sellers
-                                        if ask_liquidity >= order_quantity:  # Fully filled
-                                                status = "filled"
-                                                filled_quantity = order_quantity
-                                                break
-                                        else:
-                                                status="partially_filled"
-                                                filled_quantity = ask_liquidity
-                                                break
-                                else:  # Partially filled
-                                        status = "pending"
-                                        filled_quantity = 0 
+                                        if ask_price == order_price:  # Check for matching sellers
+                                                if ask_liquidity >= order_quantity:  # Fully filled
+                                                        status = "filled"
+                                                        filled_quantity = order_quantity
+                                                        break
+                                                else:
+                                                        status="partially_filled"
+                                                        filled_quantity = ask_liquidity
+                                                        break
+                                        else:  # Partially filled
+                                                status = "pending"
+                                                filled_quantity = 0 
 
 
         # Sell Order Logic
                 elif order_type == "sell":
-                        for bid in bids:
-                                bid_price = float(bid["price"])
-                                bid_liquidity = int(bid["liquidity"])
+                        if quantity_holding<order_quantity:
+                                messages.error(request, "Insufficient holdings for this currency pair")
+                                return redirect('order_management')
+                        else:
 
-                                if bid_price == order_price: 
-                                         # Check for matching buyers
-                                        if bid_liquidity >= order_quantity:  # Fully filled
-                                                status = "filled"
-                                                filled_quantity = order_quantity
-                                                break
-                                        else:
-                                                status="partially_filled"
-                                                filled_quantity = bid_liquidity
-                                                break
-                                else:  # Partially filled               
-                                        status = "pending"
-                                        filled_quantity = 0
+                                for bid in bids:
+                                        bid_price = float(bid["price"])
+                                        bid_liquidity = int(bid["liquidity"])
+
+                                        if bid_price == order_price: 
+                                                # Check for matching buyers
+                                                if bid_liquidity >= order_quantity:  # Fully filled
+                                                        status = "filled"
+                                                        filled_quantity = order_quantity
+                                                        break
+                                                else:
+                                                        status="partially_filled"
+                                                        filled_quantity = bid_liquidity
+                                                        break
+                                        else:  # Partially filled               
+                                                status = "pending"
+                                                filled_quantity = 0
 
                 
                 Order.objects.create(               

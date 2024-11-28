@@ -3,6 +3,8 @@ from django.dispatch import receiver
 from .models import Order
 from portfolio_management.models import Portfolio
 
+from decimal import Decimal
+
 import logging
 logger = logging.getLogger(__name__)
 
@@ -15,21 +17,22 @@ def update_portfolio(sender, instance, **kwargs):
     instrument = instance.instrument
     order_type = instance.order_type
     order_quantity = instance.quantity
-    order_price = instance.price
-    filled_quantity = instance.filled_quantity
+    order_price = Decimal(instance.price)
+    filled_quantity = Decimal(instance.filled_quantity)
 
     # Only update portfolio for filled or partially filled orders
     if instance.status in ['filled', 'partially_filled']:
         portfolio, created = Portfolio.objects.get_or_create(
             user=user,
             instrument=instrument,
+            defaults={'quantity': 0, 'average_price': Decimal(0.0)}
         )
 
         if order_type == 'buy':
             # Weighted average price formula for buy orders
             total_quantity = portfolio.quantity + filled_quantity
             portfolio.average_price = (
-                (portfolio.quantity * portfolio.average_price) +
+                (Decimal(portfolio.quantity) * portfolio.average_price) +
                 (filled_quantity * order_price)
             ) / total_quantity
             portfolio.quantity = total_quantity
@@ -40,7 +43,7 @@ def update_portfolio(sender, instance, **kwargs):
             # Prevent negative quantity
             if portfolio.quantity < 0:
                 portfolio.quantity = 0
-                portfolio.average_price = 0  # Reset average price if no holdings
+                portfolio.average_price = Decimal(0.0)  # Reset average price if no holdings
 
         print(portfolio.quantity)
 

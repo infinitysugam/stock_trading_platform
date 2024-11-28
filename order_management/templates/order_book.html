@@ -4,6 +4,7 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/order_book.css' %}">
 
+
 <div class="main-container">
     <!-- First Row -->
     <div class="row first-row">
@@ -68,15 +69,38 @@
                     <div class="input-row">
                         <div class="input-group">
                             <label for="price">Price</label>
-                            <input type="number" id="price" name="price" step="0.00001" placeholder="Enter price" required>
+                            <input
+                                type="number"
+                                id="price"
+                                name="price"
+                                step="0.00001"
+                                placeholder="Enter price"
+                                required
+                                oninput="calculateTotal()"
+                            >
                         </div>
                         <div class="input-group">
                             <label for="quantity">Quantity</label>
-                            <input type="number" id="quantity" name="quantity" step="1" placeholder="Enter quantity" required>
+                            <input
+                                type="number"
+                                id="quantity"
+                                name="quantity"
+                                step="1"
+                                placeholder="Enter quantity"
+                                required
+                                oninput="calculateTotal()"
+                            >
                         </div>
                         <div class="input-group">
-                            <label for="quantity">Total</label>
-                            <input type="number" id="Total" name="Total"  placeholder="Total" required readonly>
+                            <label for="total">Total</label>
+                            <input
+                                type="number"
+                                id="total"
+                                name="total"
+                                placeholder="Total"
+                                required
+                                readonly
+                            >
                         </div>
                     </div>
 
@@ -84,6 +108,13 @@
 
                     <!-- Submit Button -->
                     <button type="submit" class="btn-submit">Place Order</button>
+                    {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                                <li class="{{ message.tags }}">{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
                 </form>
             </div>
         </div>
@@ -137,5 +168,14 @@
         </div>
     </div>
 </div>
+
+<script>
+    function calculateTotal() {
+        const price = parseFloat(document.getElementById('price').value) || 0;
+        const quantity = parseFloat(document.getElementById('quantity').value) || 0;
+        const total = price * quantity;
+        document.getElementById('total').value = total.toFixed(5); // Display total with 5 decimal points
+    }
+</script>
 
 {% endblock %}
