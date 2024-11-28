@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'market_overwatch.apps.MarketOverwatchConfig',
     'order_management.apps.OrderManagementConfig',
-    'portfolio_management.apps.PortfolioManagementConfig'
+    'portfolio_management.apps.PortfolioManagementConfig',
+    'risk_management.apps.RiskManagementConfig',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -136,4 +138,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 LOGIN_REDIRECT_URL = '/'  # Redirect to the homepage or desired URL
+
+LOGIN_URL = 'login/'
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}
 

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<h1>Dashboard</h1>
+
+<!-- Order Management Section -->
+<h2>Order Book</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Instrument</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Filled Quantity</th>
+            <th>Status</th>
+            <th>Timestamp</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.order_type|title }}</td>
+            <td>{{ order.instrument }}</td>
+            <td>{{ order.price }}</td>
+            <td>{{ order.quantity }}</td>
+            <td>{{ order.filled_quantity }}</td>
+            <td>{{ order.status|title }}</td>
+            <td>{{ order.timestamp }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7" style="text-align: center;">No orders found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Portfolio Management Section -->
+<h2>Portfolio Management</h2>
+<p><strong>Total Portfolio Value:</strong> {{ total_portfolio_value }}</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Instrument</th>
+            <th>Quantity</th>
+            <th>Average Price</th>
+            <th>Current Price</th>
+            <th>Current Value</th>
+            <th>Unrealized Return</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for instrument in portfolio_instruments %}
+        <tr>
+            <td>{{ instrument.instrument.symbol }}</td>
+            <td>{{ instrument.quantity }}</td>
+            <td>{{ instrument.average_price }}</td>
+            <td>{{ instrument.current_price }}</td>
+            <td>{{ instrument.current_value }}</td>
+            <td>{{ instrument.unrealized_return }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6" style="text-align: center;">No instruments in portfolio.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

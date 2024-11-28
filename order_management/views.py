@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 
 
 import oandapyV20
@@ -9,10 +10,12 @@ import requests
 
 from .models import Order
 
+@login_required
 def home(request):
         return render(request,'order_home.html')
 
 
+@login_required
 def order_book_view(request):
         accountID = "101-001-29894202-001"
         token="d6214def02031bec4369cb5ed02b8d8f-811f3087858ea0d03027ba6d5f34a968"
@@ -94,20 +97,21 @@ def order_book_view(request):
                                         status = "pending"
                                         filled_quantity = 0
 
-
-                Order.objects.create(
+                
+                Order.objects.create(               
                 order_type=order_type,
                 instrument=order_instrument,
                 price=order_price,
                 quantity=order_quantity,  # Original quantity
                 filled_quantity=filled_quantity,
                 status=status,
+                user = request.user,
         )
 
                 # Redirect back to the order book view after placing the order
                 return redirect('order_management')
         
-        orders = Order.objects.all().order_by('-timestamp')
+        orders = Order.objects.filter(user=request.user).order_by('-timestamp')
         paginator = Paginator(orders, 10) 
         page_number = request.GET.get('page')  
         page_obj = paginator.get_page(page_number) 
@@ -121,3 +125,17 @@ def order_book_view(request):
         }
         return render(request, 'order_book.html', context)
 
+
+@login_required
+def order_book_view_deprecated(request):
+        instrument = request.GET.get("instrument", "EUR_USD")
+        orders = Order.objects.filter(instrument=instrument).order_by('-timestamp')
+        paginator = Paginator(orders, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+        context = {
+                'instrument': instrument,
+                'page_obj': page_obj,
+        }
+        return render(request, 'order_book.html', context)
