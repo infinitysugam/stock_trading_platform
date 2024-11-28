@@ -22,6 +22,7 @@ from users import views as user_views
 from order_management import views as order_views
 from portfolio_management import views as portfolio_views
 from risk_management import views as risk_views
+from algorithmic_trading import views as algo_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,5 +33,6 @@ urlpatterns = [
     path('order_management/',order_views.order_book_view,name='order_management'),
     path('profile/',user_views.profile,name='profile'),
     path('portfolio_management/',portfolio_views.portfolio,name='portfolio_management'),
-    path('risk_management/',risk_views.home,name='risk_management')
+    path('risk_management/',risk_views.home,name='risk_management'),
+    path('algorithmic_trading/',algo_views.home,name='algorithmic_trading')
 ]

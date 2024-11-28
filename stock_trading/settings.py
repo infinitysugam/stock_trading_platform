@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'portfolio_management.apps.PortfolioManagementConfig',
     'risk_management.apps.RiskManagementConfig',
     'channels',
+    'algorithmic_trading.apps.AlgorithmicTradingConfig'
 ]
 
 MIDDLEWARE = [
