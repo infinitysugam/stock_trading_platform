@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from order_management.models import Order
 from .models import AmountDetails,Portfolio
 from .get_current_price import price
+from decimal import Decimal
 
 # Create your views here.
 
@@ -24,12 +25,22 @@ def portfolio(request):
     instrument_string = ",".join(instrument_list)
     current_prices = price(instrument_string) 
 
+    for portfolio in portfolios:
+        current_price = current_prices.get(portfolio.instrument, None)
+        portfolio.current_price = Decimal(current_price) if current_price is not None else 'N/A'
+        
+        # Calculate returns if current price is available
+        if current_price is not None and portfolio.average_price:
+            portfolio.returns = (Decimal(current_price) - portfolio.average_price) * portfolio.quantity
+            portfolio.abs_returns = abs(portfolio.returns)
+        else:
+            portfolio.returns = 'N/A'
+            portfolio.abs_returns = 'N/A'
     # Pass the deposited amount to the template
     context = {
         'cash_left': cash_left,
         'invested_amount':invested_amount,
         'portfolios': portfolios,
-        'current_prices':current_prices,
     }
     return render(request,'portifolio.html',context)            
 
