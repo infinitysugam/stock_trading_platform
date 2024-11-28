@@ -14,7 +14,8 @@ class Portfolio(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     instrument = models.CharField(max_length=10)
     quantity = models.BigIntegerField(default=0)
-    average_price = models.DecimalField(max_digits=10, decimal_places=5,default=0.0) 
+    average_price = models.DecimalField(max_digits=10, decimal_places=5,default=0.0)
+    stop_loss = models.DecimalField(max_digits=10,decimal_places=5) 
     last_updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):

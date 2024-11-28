@@ -3,4 +3,140 @@
 {% block content %} 
 
 
+<link rel="stylesheet" href="{% static 'css/risk.css' %}">
+
+<div class="container">
+    <div>
+        <button class="btn edit-btn" onclick="enableEditing()">EDIT</button>
+        <button class="btn save-btn" onclick="saveStopLoss()">SAVE</button>
+    </div>
+    <table id="stopLossTable" class="risk-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Average Price</th>
+                <th>Current Price</th>
+                <th>Returns</th>
+                <th>Returns Percentage</th>
+                <th>StopLoss(%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for portfolio in portfolios %}
+            <tr data-id="{{ portfolio.id }}">
+                <td>{{ portfolio.instrument }}</td>
+                <td>{{ portfolio.quantity }}</td>
+                <td>{{ portfolio.average_price }}</td>
+                <td>{{ portfolio.current_price|floatformat:4 }}</td>
+                <td>
+                    {% if portfolio.returns != 'N/A' %}
+                    <span style="color: {% if portfolio.returns > 0 %}green{% else %}red{% endif %};">
+                        {% if portfolio.returns > 0 %}
+                            ▲
+                        {% elif portfolio.returns < 0 %}
+                            ▼
+                        {% endif %}
+                        ${{ portfolio.abs_returns|floatformat:2 }} <!-- Use absolute value for display -->
+                    </span>
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+                <td>  {% if portfolio.returns != 'N/A' %}
+                    <span style="color: {% if portfolio.return_percentage > 0 %}green{% else %}red{% endif %};">
+                        {% if portfolio.return_percentage > 0 %}
+                            ▲
+                        {% elif portfolio.return_percentage < 0 %}
+                            ▼
+                        {% endif %}
+                        {{ portfolio.abs_return_percentage|floatformat:2 }}% <!-- Use absolute value for display -->
+                    </span>
+                    {% else %}
+                        N/A
+                    {% endif %}</td>
+                    <td>
+                        <input type="number" class="stop-loss-input" value = "{{ portfolio.stop_loss }}" disabled>
+                    </td>
+
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="text-align: center;">No data available in your portfolio.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+
+
+function enableEditing() {
+            // Enable all stop-loss input fields
+            const inputs = document.querySelectorAll('.stop-loss-input');
+            inputs.forEach(input => {
+                input.disabled = false;
+            });
+        }
+function saveStopLoss() {
+    console.log("Save button clicked"); // Debug: Ensure the function is triggered
+
+    // Collect all stop-loss values
+    const rows = document.querySelectorAll('#stopLossTable tbody tr');
+    const stopLossData = [];
+
+    rows.forEach(row => {
+        const id = row.getAttribute('data-id'); // Get the portfolio ID
+        const stopLossInput = row.querySelector('.stop-loss-input'); // Get the input field
+        const stopLoss = parseFloat(stopLossInput.value); // Get the stop loss value
+
+        console.log(`Row Data - ID: ${id}, Stop Loss: ${stopLoss}`); // Debug: Log each row's data
+
+        // Push the ID and stop loss into the data array
+        stopLossData.push({ id: id, stop_loss: stopLoss });
+    });
+
+    console.log("Final stopLossData to be sent:", stopLossData); // Debug: Log the final array
+
+    // Send data to the server
+    fetch('/update_stop_loss/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCSRFToken() // Ensure CSRF token is included
+        },
+        body: JSON.stringify(stopLossData) // Send stopLossData as JSON
+    })
+    .then(response => {
+        console.log("Response received:", response); // Debug: Log the raw response object
+        return response.json();
+    })
+    .then(data => {
+        console.log("Parsed response data:", data); // Debug: Log the parsed JSON response
+
+        if (data.success) {
+            alert(data.message);
+            window.location.reload(); // Reload the page to fetch updated data
+        } else {
+            alert(`Error: ${data.message}`);
+        }
+    })
+    .catch(error => {
+        console.error("Error during fetch request:", error); // Debug: Log any errors during fetch
+    });
+}
+
+// Function to get CSRF token from cookies
+function getCSRFToken() {
+    const cookieValue = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('csrftoken='))
+        ?.split('=')[1];
+    console.log("CSRF Token:", cookieValue); // Debug: Log the CSRF token
+    return cookieValue || '';
+}
+</script>
+
+
 {% endblock %}
