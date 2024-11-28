@@ -1,9 +1,12 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 from django.contrib.auth.decorators import login_required
 from order_management.models import Order
 from .models import AmountDetails,Portfolio
 from .get_current_price import price
 from decimal import Decimal
+
+from django.contrib import messages
+
 
 # Create your views here.
 
@@ -17,6 +20,22 @@ def portfolio(request):
         invested_amount = deposit.used_amount if deposit else 0
     else:
         deposited_amount = 0
+
+
+    
+        # Handle deposit functionality
+    if request.method == 'POST' and 'deposit_amount' in request.POST:
+        try:
+            deposit_amount = Decimal(request.POST.get('deposit_amount', 0))
+            if deposit_amount <= 0:
+                messages.error(request, "Deposit amount must be greater than zero.")
+            else:
+                deposit.cash_amount += deposit_amount
+                deposit.save()
+                messages.success(request, f"Successfully deposited ${deposit_amount:.2f}. Your new balance is ${deposit.cash_amount:.2f}.")
+                return redirect('portfolio_management')  # Avoid form resubmission
+        except Exception as e:
+            messages.error(request, "Invalid deposit amount. Please try again.")
 
     
     portfolios = Portfolio.objects.filter(user=request.user)
