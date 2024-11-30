@@ -1,17 +1,53 @@
-{% extends "base.html" %}  
 {% load static %}
-{% block content %}
-<div class="content-section">
-    <form method="POST">
-        {% csrf_token %}
-        <fieldset class="form-group">
-            <legend class = "border-bottom mb-4">Join Today</legend>
-            {{ form.as_p }}
-        </fieldset>
-        <div class="form-group">
-            <button class="btn btn-outline-info" type="submit">Sign Up</button>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Signup Page</title>
+        <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    </head>
+    <body>
+        <div class="titleText">
+            <h2>SFINIX</h2>
         </div>
+        <div class="box">
+            <form class="form" method="POST">
+                {% csrf_token %}
+                <h2>Signup</h2>
+                <div class="inputBox">
+                    <input type="text" name="username" required="required">
+                    <span>Username</span>
+                </div>
+                <div class="inputBox">
+                    <input type="password" name="password1" required="required">
+                    <span>Password</span>
+                    {% if form.password1.errors %}
+                    <div class="error">
+                        {% for error in form.password1.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="inputBox">
+                    <input type="password" name="password2" required="required" le>
+                    <span>Confirm Password</span>
+                    {% if form.password2.errors %}
+                    <div class="error">
+                        {% for error in form.password2.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                <br>
+                <br>
 
-    </form>
-</div>
-{% endblock %}
+                <div>
+                    <input type="submit" value="Signup">
+                </div>
+            </form>
+            
+        </div>
+    </body>
+</html>

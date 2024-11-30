@@ -39,9 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'market_overwatch.apps.MarketOverwatchConfig',
-    'news_aggregator',
-    'cryptocurrency_market',
-    'order_management'
+    'order_management.apps.OrderManagementConfig',
+    'portfolio_management.apps.PortfolioManagementConfig',
+    'risk_management.apps.RiskManagementConfig',
+    'channels',
+    'algorithmic_trading.apps.AlgorithmicTradingConfig'
 ]
 
 MIDDLEWARE = [
@@ -147,3 +149,24 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+LOGIN_REDIRECT_URL = '/'  # Redirect to the homepage or desired URL
+
+LOGIN_URL = 'login/'
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}
+

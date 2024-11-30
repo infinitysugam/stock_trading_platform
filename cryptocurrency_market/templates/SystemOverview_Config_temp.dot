@@ -1,0 +1,47 @@
+// System Overview and Configuration Chart for SFINIX Forex Trading Platform
+
+digraph SFINIX_Architecture {
+    rankdir=TB;
+    node [shape=rectangle, style=filled, color=lightblue, fontname="Helvetica"];
+
+    // Nodes
+    UI_Layer [label="User Interface (UI) Layer" shape=box];
+    Data_Feed [label="Market Data Feed Processor" shape=box];
+    OMS [label="Order Management System (OMS)" shape=box];
+    Trade_Execution [label="Trade Execution Engine" shape=box];
+    Risk_Module [label="Risk and Compliance Module" shape=box];
+    Backend_Infrastructure [label="Backend Infrastructure" shape=box];
+    Security_Auth [label="Security and Authentication" shape=box];
+    Cloud_DB [label="Cloud Databases" shape=cylinder, color=lightyellow];
+    Message_Broker [label="Message Broker" shape=ellipse, color=lightgreen];
+    External_APIs [label="External Market Data & Broker APIs" shape=octagon, color=lightcoral];
+
+    // Relationships
+    UI_Layer -> Data_Feed [label="Requests Market Data"];
+    UI_Layer -> OMS [label="User Orders"];
+    UI_Layer -> Risk_Module [label="User Risk Settings"];
+    OMS -> Trade_Execution [label="Order Routing & Execution"];
+    Data_Feed -> Trade_Execution [label="Real-time Market Data"];
+    Trade_Execution -> Cloud_DB [label="Store Trade Details"];
+    Trade_Execution -> Risk_Module [label="Compliance Checks"];
+    OMS -> Cloud_DB [label="Order Data Storage"];
+    UI_Layer -> Cloud_DB [label="View Portfolio, Orders" style=dashed];
+    Backend_Infrastructure -> Cloud_DB [label="Data Management"];
+    Backend_Infrastructure -> Message_Broker [label="Inter-service Communication"];
+    Message_Broker -> Risk_Module [label="Risk Alerts"];
+    Risk_Module -> External_APIs [label="Compliance Updates"];
+    Trade_Execution -> External_APIs [label="Broker API Integration"];
+    Security_Auth -> UI_Layer [label="User Authentication"];
+    Security_Auth -> Backend_Infrastructure [label="Secure Access"];
+
+    // Additional Settings
+    subgraph cluster0 {
+        label="Backend Systems";
+        style=dashed;
+        color=gray;
+        Backend_Infrastructure;
+        Message_Broker;
+        Security_Auth;
+        Cloud_DB;
+    }
+}

@@ -33,30 +33,37 @@
 </head>
 <body>
     <div class="container-fluid">
-        <div class="row flex-nowrap">
-            <div class="col-auto col-md-2 col-xl-1 px-0 sidebar" >
-                <div class="d-flex flex-column align-items-center align-items-sm-start px-2 pt-2 text-white min-vh-100">
-                    <!-- Spinning Infinity Logo -->
-                    <div class="logo-container mb-2">
-                        <img src="{% static 'images/infinity-logo.svg' %}" alt="Infinity Logo" class="infinity-logo">
-                    </div>
+        <!-- Top Navbar -->
+        <nav class="navbar navbar-expand-lg fixed-top" style="background-color: #0a1016;">
+            <a class="navbar-brand ms-2" href="/">
+                <img src="{% static 'images/logo1.png' %}" alt="Logo" style="height: 40px; margin-right: 10px;">
+                
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="profileIcon">
+                    <li class="nav-item-user">
+                        <a href="/profile" class="nav-link align-middle px-4">
+                            <img style="height: 40px;" src="{% static 'images/user.png' %}" alt="User">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
     
-                    <!-- Menu Text -->
-                    <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                        <!-- <span class="fs-5 fw-bold d-none d-sm-inline">Menu</span> -->
-                    </a>
-    
-                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-                        <li class="nav-item-user">
-                            <a href="/" class="nav-link align-middle px-2">
-                                <img src="{% static 'images/user.svg' %}" alt="User" >
+        <div class="row flex-nowrap" style="margin-top: 70px;">
+            <!-- Sidebar -->
+            <div class="col-auto col-md-2 col-xl-1 px-0 sidebar ">
+                <div class="d-flex flex-column align-items-center align-items-sm-start px-2 pt-2 text-white min-vh-100 ">
 
-                            </a>
-                        </li>
+    
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start " id="menu">
                         <li class="nav-item">
                             <a href="/" class="nav-link align-middle px-2">
                                 <i class="fs-5 bi-house"></i>
-                                <span class="ms-1 d-none d-sm-inline">Market</span>
+                                <span class="ms-1 d-none d-sm-inline">Home</span>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -72,15 +79,15 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/news" class="nav-link align-middle px-2">
+                            <a href="/risk_management/" class="nav-link align-middle px-2">
                                 <i class="fs-5 bi-speedometer2"></i>
-                                <span class="ms-1 d-none d-sm-inline">News</span>
+                                <span class="ms-1 d-none d-sm-inline">Risk</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/crypto" class="nav-link align-middle px-2">
+                            <a href="/algorithmic_trading/" class="nav-link align-middle px-2">
                                 <i class="fs-5 bi-speedometer2"></i>
-                                <span class="ms-1 d-none d-sm-inline">Crypto</span>
+                                <span class="ms-1 d-none d-sm-inline">Algo Trade</span>
                             </a>
                         </li>
                     </ul>
@@ -88,7 +95,44 @@
                 </div>
             </div>
     
+            <!-- Main Content -->
             <div class="col py-3">
+                <!-- TradingView Widget BEGIN -->
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+                    {
+                    "symbols": [
+                        {
+                            "proName": "FOREXCOM:SPXUSD",
+                            "title": "S&P 500 Index"
+                        },
+                        {
+                            "proName": "FOREXCOM:NSXUSD",
+                            "title": "US 100 Cash CFD"
+                        },
+                        {
+                            "proName": "FX_IDC:EURUSD",
+                            "title": "EUR to USD"
+                        },
+                        {
+                            "proName": "BITSTAMP:BTCUSD",
+                            "title": "Bitcoin"
+                        },
+                        {
+                            "proName": "BITSTAMP:ETHUSD",
+                            "title": "Ethereum"
+                        }
+                    ],
+                    "showSymbolLogo": true,
+                    "isTransparent": true,
+                    "displayMode": "regular",
+                    "colorTheme": "dark",
+                    "locale": "en"
+                    }
+                    </script>
+                </div>
+                <!-- TradingView Widget END -->
                 {% block content %}{% endblock %}
             </div>
         </div>

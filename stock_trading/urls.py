@@ -19,6 +19,10 @@ from django.urls import path, include
 from market_overwatch import views as market_overwatch_views
 from django.contrib.auth import views as auth_views
 from users import views as user_views
+from order_management import views as order_views
+from portfolio_management import views as portfolio_views
+from risk_management import views as risk_views
+from algorithmic_trading import views as algo_views
 
 
 urlpatterns = [
@@ -27,8 +31,10 @@ urlpatterns = [
     path('login/',auth_views.LoginView.as_view(template_name='login.html'),name='login'),
     path('logout/',auth_views.LogoutView.as_view(template_name='logout.html'),name='logout'),
     path('register/',user_views.register,name='register'),
-    # path('news/',include('news_aggregator.urls')),
-    path('news/', include('news_aggregator.urls')),  # Include the URLs for the news_aggregator app
-    path('crypto/',include('cryptocurrency_market.urls')),
-    path('order/',include('order_management.urls')),
+    path('order_management/',order_views.order_book_view,name='order_management'),
+    path('profile/',user_views.profile,name='profile'),
+    path('portfolio_management/',portfolio_views.portfolio,name='portfolio_management'),
+    path('risk_management/',risk_views.home,name='risk_management'),
+    path('update_stop_loss/',risk_views.update_stop_loss,name='update_stop_loss'),
+    path('algorithmic_trading/',algo_views.home,name='algorithmic_trading')
 ]
