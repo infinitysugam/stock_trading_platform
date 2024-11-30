@@ -35,13 +35,6 @@ source env/bin/activate
 pip install -r requirements.txt
 
 
-
-###3. Install Python Dependencies
-
-# Install all required packages from the requirements.txt file
-pip install -r requirements.txt
-
-
 ###4. Create a database in mysql
 
 create schema stock_trading;
