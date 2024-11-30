@@ -13,6 +13,8 @@ def update_portfolio(sender, instance, **kwargs):
     """
     Update the portfolio whenever an order is made.
     """
+
+    print("#####################Signal has been fired")
     user = instance.user
     instrument = instance.instrument
     order_type = instance.order_type
@@ -32,8 +34,9 @@ def update_portfolio(sender, instance, **kwargs):
         portfolio, created = Portfolio.objects.get_or_create(
             user=user,
             instrument=instrument,
-            defaults={'quantity': 0, 'average_price': Decimal(0.0)}
+            defaults={'quantity': 0, 'average_price': Decimal(0.0),'stop_loss':Decimal(0.0)}
         )
+
 
         if order_type == 'buy':
             # Weighted average price formula for buy orders
@@ -52,8 +55,13 @@ def update_portfolio(sender, instance, **kwargs):
             # Deduct quantity for sell orders
             portfolio.quantity -= filled_quantity
             # Prevent negative quantity
-            if portfolio.quantity < 0:
-                portfolio.quantity = 0
+
+
+            print("######################################")
+            print(portfolio.quantity,filled_quantity)
+            if portfolio.quantity <= 0:
+                portfolio.delete()  # Delete portfolio if quantity is 0
+            else:
                 portfolio.average_price = Decimal(0.0)  # Reset average price if no holdings
 
             amount_details.cash_amount += total_cost
@@ -61,8 +69,12 @@ def update_portfolio(sender, instance, **kwargs):
 
         #print(portfolio.quantity)
 
-        portfolio.save()
         amount_details.save()
+
+
+        if portfolio.id:
+            portfolio.save()
+
 
 
 

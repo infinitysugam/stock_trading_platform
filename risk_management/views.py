@@ -4,6 +4,9 @@ from portfolio_management.models import Portfolio
 from django.contrib.auth.decorators import login_required
 from decimal import Decimal
 
+
+from order_management.views import automated_trading
+from order_management.models import Order
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.http import JsonResponse
@@ -13,6 +16,8 @@ from django.http import JsonResponse
 @login_required
 def home(request):     
     portfolios = Portfolio.objects.filter(user=request.user)
+
+    orders = Order.objects.filter(user=request.user,order_source='automated').order_by('-timestamp')
 
     instrument_list = [portfolio.instrument for portfolio in portfolios]
     instrument_string = ",".join(instrument_list)
@@ -36,7 +41,20 @@ def home(request):
     # Pass the deposited amount to the template
     context = {
         'portfolios': portfolios,
+        'page_obj':orders,
     }
+
+
+    for portfolio in portfolios:
+        if portfolio.stop_loss!=0 and portfolio.abs_return_percentage>=portfolio.stop_loss:
+            params={
+                'instrument':portfolio.instrument,
+                'quantity':portfolio.quantity,
+                'price':None,
+                'order_type':'sell',
+            }
+            automated_trading(request,params)
+
 
     return render(request,'risk_home.html',context)
 
