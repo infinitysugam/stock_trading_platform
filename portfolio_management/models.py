@@ -23,6 +23,18 @@ class Portfolio(models.Model):
 
 
 
+
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.message
+
+
+
 # class PortfolioInstrument(models.Model):
 #     portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
 #     instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)

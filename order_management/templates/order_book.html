@@ -108,13 +108,19 @@
                     <!-- Submit Button -->
                     <button type="submit" class="btn-submit">Place Order</button>
                 </form>
-                {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                        <li class="{{ message.tags }}">{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
+
+                                <!-- Messages Section -->
+<div class="container mt-4">
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+</div>
+        
+    
             </div>
         </div>
     </div>

@@ -33,7 +33,7 @@
 </head>
 <body>
     <div class="container-fluid">
-        <!-- Top Navbar -->
+<!-- Top Navbar -->
         <nav class="navbar navbar-expand-lg fixed-top" style="background-color: #0a1016;">
             <a class="navbar-brand ms-2" href="/">
                 <img src="{% static 'images/logo1.png' %}" alt="Logo" style="height: 40px; margin-right: 10px;">
@@ -43,6 +43,32 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="profileIcon d-flex align-items-center">
+                    <li class="nav-item dropdown me-3">
+                        <a href="#" class="nav-link dropdown-toggle" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="markAllNotificationsAsSeen();">
+                            <img style="height: 30px;" src="{% static 'images/notification.png' %}" alt="Notifications">
+                            {% if notification_count > 0 %}
+                                <span class="badge badge-danger position-absolute" style="top: 10px; right: 10px;">
+                                    {{ notification_count }}
+                                </span>
+                            {% endif %}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" style="width: 300px; max-height: 400px; overflow-y: auto;">
+                            {% if notifications %}
+                                {% for notification in notifications %}
+                                    <li class="dropdown-item {% if not notification.is_read %}bg-light{% endif %}">
+                                        <span class="fw-bold {% if not notification.is_read %}text-primary{% endif %}">{{ notification.message }}</span>
+                                        <small class="text-muted d-block">{{ notification.timestamp }}</small>
+                                    </li>
+                                    <hr class="dropdown-divider">
+                                {% endfor %}
+                            {% else %}
+                                <li class="dropdown-item text-center text-muted">
+                                    No notifications
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </li>
                 <ul class="profileIcon">
                     <li class="nav-item-user">
                         <a href="/profile" class="nav-link align-middle px-4">
@@ -52,7 +78,7 @@
                 </ul>
             </div>
         </nav>
-    
+
         <div class="row flex-nowrap" style="margin-top: 70px;">
             <!-- Sidebar -->
             <div class="col-auto col-md-2 col-xl-1 px-0 sidebar ">
@@ -140,4 +166,26 @@
     
 
 </body>
+<script>
+    function markAllNotificationsAsSeen() {
+        fetch("{% url 'mark_notification_as_seen' %}", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}",
+                "Content-Type": "application/json",
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                // Optionally, clear the unread badge
+                const badge = document.querySelector(".badge.badge-danger");
+                if (badge) {
+                    badge.remove();
+                }
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    }
+</script>
 </html>

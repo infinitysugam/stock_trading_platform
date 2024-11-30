@@ -35,5 +35,7 @@ urlpatterns = [
     path('portfolio_management/',portfolio_views.portfolio,name='portfolio_management'),
     path('risk_management/',risk_views.home,name='risk_management'),
     path('update_stop_loss/',risk_views.update_stop_loss,name='update_stop_loss'),
-    path('algorithmic_trading/',algo_views.home,name='algorithmic_trading')
+    path('algorithmic_trading/',algo_views.home,name='algorithmic_trading'),
+    path('notifications/mark-as-seen/', portfolio_views.mark_notification_as_seen, name='mark_notification_as_seen'),
+
 ]

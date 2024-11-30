@@ -1,9 +1,11 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.contrib.auth.decorators import login_required
 from order_management.models import Order
-from .models import AmountDetails,Portfolio
+from .models import AmountDetails,Portfolio,Notification
 from .get_current_price import price
 from decimal import Decimal
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from django.contrib import messages
 
@@ -64,6 +66,18 @@ def portfolio(request):
     return render(request,'portifolio.html',context)            
 
 
+
+
+@csrf_exempt
+def mark_notification_as_seen(request):
+    """
+    Mark a specific notification as seen.
+    """
+    
+    if request.user.is_authenticated:
+        Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
+        return JsonResponse({'status': 'success'}, status=200)
+    return JsonResponse({'status': 'unauthorized'}, status=401)
 
 # @login_required
 # def combined_view(request):
