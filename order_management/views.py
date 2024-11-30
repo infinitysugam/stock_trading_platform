@@ -265,5 +265,6 @@ def automated_trading(request,params):
         quantity=order_quantity,  # Original quantity
         filled_quantity=filled_quantity,
         status=status,
+        order_source = 'automated',
         user = request.user,
 )
