@@ -117,7 +117,7 @@
 .tradingview-widget-container {
     flex: 1; /* Allow items to grow */
     padding: 10px; /* Optional padding for better spacing */
-    height:55px
+ 
 }
 
 .chart1 {
@@ -165,4 +165,12 @@
 p {
     font-size: 1.2rem;
     color: #333;
+}
+
+.container-fluid{
+    position: fixed;
+}
+
+.side-container{
+    height: 80vh;
 }

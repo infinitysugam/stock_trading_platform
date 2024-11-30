@@ -35,9 +35,8 @@ body {
 
 /* Order Book Table */
 
-.order-book{
-    height: 40%;
-width: 100%;
+.order-book {
+    width: 100%;
 }
 
 .order-book th {
