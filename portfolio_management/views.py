@@ -61,6 +61,7 @@ def portfolio(request):
     context = {
         'cash_left': cash_left,
         'invested_amount':invested_amount,
+        'total_amount':cash_left + invested_amount,
         'portfolios': portfolios,
     }
     return render(request,'portifolio.html',context)            
