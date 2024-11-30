@@ -1,8 +1,12 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 from django.contrib.auth.decorators import login_required
 from order_management.models import Order
 from .models import AmountDetails,Portfolio
 from .get_current_price import price
+from decimal import Decimal
+
+from django.contrib import messages
+
 
 # Create your views here.
 
@@ -17,6 +21,22 @@ def portfolio(request):
     else:
         deposited_amount = 0
 
+
+    
+        # Handle deposit functionality
+    if request.method == 'POST' and 'deposit_amount' in request.POST:
+        try:
+            deposit_amount = Decimal(request.POST.get('deposit_amount', 0))
+            if deposit_amount <= 0:
+                messages.error(request, "Deposit amount must be greater than zero.")
+            else:
+                deposit.cash_amount += deposit_amount
+                deposit.save()
+                messages.success(request, f"Successfully deposited ${deposit_amount:.2f}. Your new balance is ${deposit.cash_amount:.2f}.")
+                return redirect('portfolio_management')  # Avoid form resubmission
+        except Exception as e:
+            messages.error(request, "Invalid deposit amount. Please try again.")
+
     
     portfolios = Portfolio.objects.filter(user=request.user)
 
@@ -24,12 +44,22 @@ def portfolio(request):
     instrument_string = ",".join(instrument_list)
     current_prices = price(instrument_string) 
 
+    for portfolio in portfolios:
+        current_price = current_prices.get(portfolio.instrument, None)
+        portfolio.current_price = Decimal(current_price) if current_price is not None else 'N/A'
+        
+        # Calculate returns if current price is available
+        if current_price is not None and portfolio.average_price:
+            portfolio.returns = (Decimal(current_price) - portfolio.average_price) * portfolio.quantity
+            portfolio.abs_returns = abs(portfolio.returns)
+        else:
+            portfolio.returns = 'N/A'
+            portfolio.abs_returns = 'N/A'
     # Pass the deposited amount to the template
     context = {
         'cash_left': cash_left,
         'invested_amount':invested_amount,
         'portfolios': portfolios,
-        'current_prices':current_prices,
     }
     return render(request,'portifolio.html',context)            
 
