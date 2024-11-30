@@ -34,6 +34,9 @@ def portfolio(request):
             else:
                 deposit.cash_amount += deposit_amount
                 deposit.save()
+                message = f'''${deposit.amount} Amount Deposited in the platform.'''
+
+                add_notification(request,message)
                 messages.success(request, f"Successfully deposited ${deposit_amount:.2f}. Your new balance is ${deposit.cash_amount:.2f}.")
                 return redirect('portfolio_management')  # Avoid form resubmission
         except Exception as e:
@@ -68,6 +71,10 @@ def portfolio(request):
 
 
 
+
+
+def add_notification(request,message):
+    Notification.objects.create(user=request.user,message=message)
 
 @csrf_exempt
 def mark_notification_as_seen(request):

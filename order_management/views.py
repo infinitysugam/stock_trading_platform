@@ -11,6 +11,7 @@ import requests
 
 from .models import Order
 from portfolio_management.models import AmountDetails,Portfolio
+from portfolio_management.views import add_notification
 
 @login_required
 def home(request):
@@ -72,7 +73,11 @@ def order_book_view(request):
                 # Buy Order Logic
                 if order_type == "buy":
                         if cash_left<(order_price*order_quantity):
-                        #Logic for deposit
+
+                                message = f'''Insufficient funds.Please deposit more cash'''
+
+                                add_notification(request,message)
+                                #Logic for deposit
                                 messages.error(request, "Insufficient funds. Please deposit more cash.")
                                 return redirect('order_management')  # Redirect to the same or another page
                         else:
@@ -97,6 +102,10 @@ def order_book_view(request):
         # Sell Order Logic
                 elif order_type == "sell":
                         if quantity_holding<order_quantity:
+
+                                message = f'''Insufficient holdings for this currency pair'''
+
+                                add_notification(request,message)
                                 messages.error(request, "Insufficient holdings for this currency pair")
                                 return redirect('order_management')
                         else:
@@ -129,6 +138,13 @@ def order_book_view(request):
                 status=status,
                 user = request.user,
         )
+                
+                message = f'''{order_type} order placed for instrument {instrument}.\n Staus = {status}.
+                Total Quantity = {order_quantity} \n Filled Quantity = {filled_quantity} \n Price = {order_price}'''
+
+                add_notification(request,message)
+                
+
 
                 # Redirect back to the order book view after placing the order
                 return redirect('order_management')
@@ -287,3 +303,8 @@ def automated_trading(request, params):
         order_source = 'automated',
         user = request.user,
 )
+        
+        message = f'''{order_type} order placed for instrument {order_instrument}.\n Staus = {status}.
+                Total Quantity = {order_quantity} \n Filled Quantity = {filled_quantity} \n Price = {order_price}'''
+
+        add_notification(request,message)
