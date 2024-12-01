@@ -10,8 +10,17 @@
         <div class="titleText">
             <h2>SFINIX</h2>
         </div>
+
+        {% if messages %}
+            <div id="messages" class="messages">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
         <div class="box">
-            <form class="form" method="POST">
+            <form class="form" id="signupForm" method="POST">
                 {% csrf_token %}
                 <h2>Signup</h2>
                 <div class="inputBox">
@@ -22,22 +31,22 @@
                     <input type="password" name="password1" required="required">
                     <span>Password</span>
                     {% if form.password1.errors %}
-                    <div class="error">
-                        {% for error in form.password1.errors %}
-                            <p>{{ error }}</p>
-                        {% endfor %}
-                    </div>
+                        <div class="error">
+                            {% for error in form.password1.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
                     {% endif %}
                 </div>
                 <div class="inputBox">
-                    <input type="password" name="password2" required="required" le>
+                    <input type="password" name="password2" required="required">
                     <span>Confirm Password</span>
                     {% if form.password2.errors %}
-                    <div class="error">
-                        {% for error in form.password2.errors %}
-                            <p>{{ error }}</p>
-                        {% endfor %}
-                    </div>
+                        <div class="error">
+                            {% for error in form.password2.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
                     {% endif %}
                 </div>
                 <br>
@@ -47,7 +56,43 @@
                     <input type="submit" value="Signup">
                 </div>
             </form>
-            
         </div>
+
+        <!-- JavaScript for controlling message display timing -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                console.log("Page loaded, initializing timeout for messages.");
+
+                // Set a timer to hide the messages after a specified time
+                setTimeout(function() {
+                    const messageDiv = document.getElementById("messages");
+                    console.log("Timer triggered to fade out messages.");
+                    if (messageDiv) {
+                        // Set the initial transition for fading out the message
+                        console.log("Fading out messages.");
+                        messageDiv.style.transition = "opacity 2s ease-in-out";
+                        messageDiv.style.opacity = "0";
+
+                        // Optional: Remove the message div from the DOM after fade out is complete
+                        setTimeout(function() {
+                            console.log("Removing messages from DOM.");
+                            messageDiv.remove();
+                        }, 1000); // Wait for the fade-out animation to complete
+                    }
+                }, 5000); // Keep the messages for 5 seconds before starting fade-out
+
+                // Delay form submission if necessary
+                const form = document.getElementById("signupForm");
+                form.addEventListener("submit", function(event) {
+                    event.preventDefault(); // Prevent the form from submitting immediately
+                    console.log("Form submission delayed for 5 seconds.");
+
+                    setTimeout(() => {
+                        console.log("Submitting form now...");
+                        event.target.submit(); // Submit the form after delay
+                    }, 500); // 0.5-second delay before submitting the form
+                });
+            });
+        </script>
     </body>
 </html>

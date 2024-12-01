@@ -27,14 +27,14 @@ from algorithmic_trading import views as algo_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',market_overwatch_views.trading_view,name='trading_view'),
-    path('login/',auth_views.LoginView.as_view(template_name='login.html'),name='login'),
-    path('logout/',auth_views.LogoutView.as_view(template_name='logout.html'),name='logout'),
-    path('register/',user_views.register,name='register'),
-    path('order_management/',order_views.order_book_view,name='order_management'),
-    path('profile/',user_views.profile,name='profile'),
-    path('portfolio_management/',portfolio_views.portfolio,name='portfolio_management'),
-    path('risk_management/',risk_views.home,name='risk_management'),
-    path('update_stop_loss/',risk_views.update_stop_loss,name='update_stop_loss'),
-    path('algorithmic_trading/',algo_views.home,name='algorithmic_trading')
+    path('', market_overwatch_views.trading_view, name='trading_view'),
+    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='logout.html'), name='logout'),
+    path('register/', user_views.register, name='register'),
+    path('order_management/', order_views.order_book_view, name='order_management'),
+    path('profile/', user_views.profile, name='profile'),
+    path('portfolio_management/', portfolio_views.portfolio, name='portfolio_management'),
+    path('risk_management/', risk_views.home, name='risk_management'),
+    path('update_stop_loss/', risk_views.update_stop_loss, name='update_stop_loss'),
+    path('algorithmic_trading/', algo_views.home, name='algorithmic_trading')
 ]

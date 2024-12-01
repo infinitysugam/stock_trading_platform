@@ -4,8 +4,9 @@ from order_management.models import Order
 from .models import AmountDetails,Portfolio
 from .get_current_price import price
 from decimal import Decimal
-
 from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
+
 
 
 # Create your views here.
@@ -64,7 +65,19 @@ def portfolio(request):
     return render(request,'portifolio.html',context)            
 
 
+def signup_view(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Signup Successful")
+            return redirect("register")  # Redirect to avoid form resubmission
+        else:
+            messages.error(request, "There was an error with your submission.")
+    else:
+        form = UserCreationForm()
 
+    return render(request, "register.html", {"form": form})
 # @login_required
 # def combined_view(request):
 #     # Fetch orders
