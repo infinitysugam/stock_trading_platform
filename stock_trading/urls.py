@@ -37,7 +37,7 @@ urlpatterns = [
     path('update_stop_loss/',risk_views.update_stop_loss,name='update_stop_loss'),
     path('algorithmic_trading/',algo_views.home,name='algorithmic_trading'),
     path('notifications/mark-as-seen/', portfolio_views.mark_notification_as_seen, name='mark_notification_as_seen'),
-    path('generate_report/', portfolio_views.generate_report, name='generate_report'),
+    path('generate_report/', user_views.generate_report, name='generate_report'),
 
 
 ]

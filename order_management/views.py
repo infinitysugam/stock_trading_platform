@@ -183,7 +183,6 @@ def order_book_view_deprecated(request):
 
 def automated_trading(request, params):
 
-        print(params)
 
         order_type=params['order_type']
         order_price = params['price']

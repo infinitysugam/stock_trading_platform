@@ -3,7 +3,11 @@ from django.dispatch import receiver
 from .models import Order
 from portfolio_management.models import Portfolio,AmountDetails
 
+from django.contrib.auth.models import User
+
+
 from decimal import Decimal
+from users.models import Profile
 
 import logging
 logger = logging.getLogger(__name__)
@@ -93,3 +97,11 @@ def remove_from_portfolio(sender, instance, **kwargs):
             portfolio.delete()  # Remove portfolio if no quantity remains
     except Portfolio.DoesNotExist:
         pass
+
+
+
+@receiver(post_save, sender=User)
+def create_or_update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+    instance.profile.save() 

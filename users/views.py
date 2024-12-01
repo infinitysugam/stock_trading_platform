@@ -5,6 +5,18 @@ from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
 
+from portfolio_management.views import add_notification
+from order_management.models import Order
+
+
+
+from datetime import datetime
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from django.http import HttpResponse
+from decimal import Decimal
+
+
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -47,4 +59,119 @@ def login_view(request):
 
 
 def profile(request):
-    return render(request, 'profile.html')
+        
+        if request.method == 'POST' and 'email' in request.POST:
+            # Fetch the user and profile instances
+            user = request.user
+            profile = user.profile
+
+            # Get the data from the form
+            email = request.POST.get('email')
+            phone = request.POST.get('phone')
+            SSN = request.POST.get('SSN')
+            address = request.POST.get('address')
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
+
+            # Update the user and profile fields
+            if email:
+                user.email = email
+            if phone:
+                profile.phone = phone
+            if SSN:
+                profile.SSN = SSN
+            if address:
+                profile.address = address
+            if first_name:
+                user.first_name = first_name
+            if last_name:
+                user.last_name = last_name
+
+            # Save the changes
+            user.save()
+            profile.save()
+
+            messages.success(request, 'Your profile has been updated successfully!')
+
+            message = f'''Profile Updated.'''   
+            add_notification(request,message)
+            return redirect('profile')
+        
+
+        if request.method == 'POST' and 'start_date' in request.POST:
+            return generate_report(request)
+
+        return render(request, 'profile.html', {'user': request.user})
+
+
+
+
+def generate_report(request):
+        # Get timeframe from request (e.g., query params)
+    start_date = request.POST.get('start_date')  # Expected format: YYYY-MM-DD
+    end_date = request.POST.get('end_date')      # Expected format: YYYY-MM-DD
+
+
+    try:
+        start_date = datetime.strptime(start_date, '%Y-%m-%d') if start_date else None
+        end_date = datetime.strptime(end_date, '%Y-%m-%d') if end_date else None
+    except ValueError:
+        return HttpResponse("Invalid date format. Use YYYY-MM-DD.", status=400)
+    
+    # Filter orders within the timeframe
+    orders = Order.objects.filter(user=request.user)
+    if start_date:
+        orders = orders.filter(timestamp__gte=start_date)
+    if end_date:
+        orders = orders.filter(timestamp__lte=end_date)
+    
+    # Create the PDF response
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'inline; filename="orders_report_{datetime.now().strftime("%Y%m%d%H%M%S")}.pdf"'
+
+    # Generate PDF
+    pdf = canvas.Canvas(response, pagesize=letter)
+    pdf.setTitle("Order Report")
+
+    # Header
+    pdf.setFont("Helvetica-Bold", 18)
+    pdf.drawString(200, 750, "Order Report")
+    pdf.setFont("Helvetica", 12)
+    pdf.drawString(50, 730, f"User: {request.user.username}")
+    pdf.drawString(50, 710, f"Date Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    if start_date:
+        pdf.drawString(50, 690, f"Start Date: {start_date.strftime('%Y-%m-%d')}")
+    if end_date:
+        pdf.drawString(50, 670, f"End Date: {end_date.strftime('%Y-%m-%d')}")
+
+    # Table Header
+    y_position = 640
+    pdf.setFont("Helvetica-Bold", 10)
+    pdf.drawString(50, y_position, "Order ID")
+    pdf.drawString(150, y_position, "Instrument")
+    pdf.drawString(250, y_position, "Order Type")
+    pdf.drawString(350, y_position, "Quantity")
+    pdf.drawString(450, y_position, "Price")
+    pdf.drawString(520, y_position, "Timestamp")
+
+    # Order Data
+    y_position -= 20
+    pdf.setFont("Helvetica", 10)
+    for order in orders:
+        pdf.drawString(50, y_position, str(order.id))
+        pdf.drawString(150, y_position, order.instrument)
+        pdf.drawString(250, y_position, order.order_type.capitalize())
+        pdf.drawString(350, y_position, str(order.quantity))
+        pdf.drawString(450, y_position, f"${Decimal(order.price):.2f}")
+        pdf.drawString(520, y_position, order.timestamp.strftime('%Y-%m-%d %H:%M:%S'))
+        y_position -= 20
+
+        # Add a new page if space is insufficient
+        if y_position < 50:
+            pdf.showPage()
+            y_position = 750
+
+    # Finalize and close PDF
+    pdf.save()
+
+    return response
