@@ -174,3 +174,14 @@ p {
 .side-container{
     height: 80vh;
 }
+
+.imageclass{
+    scale: 2.5;
+    height: 30px;
+    margin-top: 10px;
+    margin-left: 15px;
+}
+
+.dropdown-toggle::after{
+    display:none;
+}

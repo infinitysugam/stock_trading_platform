@@ -42,11 +42,11 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="cc collapse navbar-collapse" id="navbarNav">
                 <ul class="profileIcon d-flex align-items-center">
                     <li class="nav-item dropdown me-3">
                         <a href="#" class="nav-link dropdown-toggle" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="markAllNotificationsAsSeen();">
-                            <img style="height: 30px;" src="{% static 'images/notification.png' %}" alt="Notifications">
+                            <img class="imageclass" src="{% static 'images/notification.png' %}" alt="Notifications">
                             {% if notification_count > 0 %}
                                 <span class="badge badge-danger position-absolute" style="top: 10px; right: 10px;">
                                     {{ notification_count }}
