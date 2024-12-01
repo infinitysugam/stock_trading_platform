@@ -180,13 +180,13 @@ body {
     box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
 }
 
-/* Submit Button */
+/* Default style for the submit button */
 .btn-submit {
     width: 100%;
     padding: 15px;
     font-size: 1.2rem;
     font-weight: bold;
-    background: linear-gradient(135deg, #28a745, #4caf50);
+    background: linear-gradient(135deg, #28a745, #4caf50); /* Default: green */
     color: #ffffff;
     border: none;
     border-radius: 8px;
@@ -194,10 +194,21 @@ body {
     transition: all 0.3s ease;
 }
 
+/* Hover effect */
 .btn-submit:hover {
-    background: linear-gradient(135deg, #218838, #43a047);
     transform: scale(1.05);
 }
+
+/* Change button color when the "Sell" option is selected */
+input#sell:checked ~ .btn-submit {
+    background: linear-gradient(135deg, #c82333, #c73140); /* Red for Sell */
+}
+
+/* Change button color when the "Buy" option is selected */
+input#buy:checked ~ .btn-submit {
+    background: linear-gradient(135deg, #28a745, #4caf50); /* Green for Buy */
+}
+
 
 /* Transaction History */
 .transaction-history-container {
@@ -294,4 +305,7 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #0056b3; /* Hover color */
+
+
 }
+

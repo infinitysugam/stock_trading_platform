@@ -11,7 +11,7 @@
         <div class="column first-column">
             <h2>Order Book</h2>
 
-            <div class="selectInstrument" style=" display: flex; flex-direction: row;position: relative;left: 50%;gap: 20px;top:-5%"> 
+            <div class="selectInstrument" style=" width: 50%;display: flex; flex-direction: row;position: relative;left: 50%;gap: 20px;top:-5%"> 
             <p style="color: aliceblue;font-size: 1rem;margin-top: 1%;">Select Instrument </p>
 
                 <form method="get" action="{% url 'order_management' %}">
@@ -66,7 +66,7 @@
                 <form method="post" action="{% url 'order_management' %}">
                     {% csrf_token %}
                     <div class="order-type-buttons">
-                        <input type="radio" id="buy" name="order_type" value="buy" required>
+                        <input type="radio" id="buy" name="order_type" value="buy" required checked>
                         <label for="buy" class="btn-buy">Buy</label>
                         <input type="radio" id="sell" name="order_type" value="sell" required>
                         <label for="sell" class="btn-sell">Sell</label>
@@ -166,6 +166,29 @@
         const total = price * quantity;
         document.getElementById('total').value = total.toFixed(5); // Display total with 5 decimal points
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const buyInput = document.getElementById('buy');
+        const sellInput = document.getElementById('sell');
+        const submitButton = document.querySelector('.btn-submit');
+
+        function updateButtonStyle() {
+            if (buyInput.checked) {
+                submitButton.style.background = 'linear-gradient(135deg, #28a745, #4caf50)'; // Green for Buy
+                submitButton.style.borderColor = '#218838'; // Optional styling
+            } else if (sellInput.checked) {
+                submitButton.style.background = 'linear-gradient(135deg, #c82333, #c73140)'; // Red for Sell
+                submitButton.style.borderColor = '#a71d2a'; // Optional styling
+            }
+        }
+
+        // Add event listeners to update the button style when a radio is selected
+        buyInput.addEventListener('change', updateButtonStyle);
+        sellInput.addEventListener('change', updateButtonStyle);
+
+        // Initial update
+        updateButtonStyle();
+    });
 </script>
 
 {% endblock %}

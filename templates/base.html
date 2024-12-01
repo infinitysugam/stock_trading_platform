@@ -53,10 +53,10 @@
                                 </span>
                             {% endif %}
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" style="width: 225px; max-height: 400px; overflow-y: auto;">
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" style="width: 355px; max-height: 400px; overflow-y: auto;left: -125px;">
                             {% if notifications %}
                                 {% for notification in notifications %}
-                                    <li class="dropdown-item {% if not notification.is_read %}bg-light{% endif %}">
+                                    <li class="dropdown-item {% if not notification.is_read %}bg-light{% endif %}" style="white-space: normal;">
                                         <span class="fw-bold {% if not notification.is_read %}text-primary{% endif %}">{{ notification.message }}</span>
                                         <small class="text-muted d-block">{{ notification.timestamp }}</small>
                                     </li>
@@ -102,7 +102,7 @@
                                 <span class="ms-1 d-none d-sm-inline">Order</span>
                             </a>
                         </li>
-                        <li class="nav-item {% if request.resolver_match.url_name == 'Risk' %}active{% endif %}">
+                        <li class="nav-item {% if request.resolver_match.url_name == 'risk_management' %}active{% endif %}">
                             <a href="/risk_management/" class="nav-link align-middle px-2">
                                 <i class="fs-5 bi-speedometer2"></i>
                                 <span class="ms-1 d-none d-sm-inline">Risk</span>
