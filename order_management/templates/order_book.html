@@ -10,7 +10,25 @@
         <!-- Order Book -->
         <div class="column first-column">
             <h2>Order Book</h2>
-            <div class="inner-row-80">
+
+            <div class="selectInstrument" style=" display: flex; flex-direction: row;position: relative;left: 50%;gap: 20px;top:-5%"> 
+            <p style="color: aliceblue;font-size: 1rem;margin-top: 1%;">Select Instrument </p>
+
+                <form method="get" action="{% url 'order_management' %}">
+                    <div class="instrument-selector">
+    
+                        <select name="instrument" id="instrument" class="instrument-dropdown" onchange="this.form.submit()">
+                            <option value="EUR_USD" {% if instrument == "EUR_USD" %}selected{% endif %}>EUR/USD</option>
+                            <option value="GBP_USD" {% if instrument == "GBP_USD" %}selected{% endif %}>GBP/USD</option>
+                            <option value="USD_JPY" {% if instrument == "USD_JPY" %}selected{% endif %}>USD/JPY</option>
+                            <option value="AUD_USD" {% if instrument == "AUD_USD" %}selected{% endif %}>AUD/USD</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+
+
+            <div class="inner-row-80" style="height: 68vh;overflow: auto;">
                 <table class="order-book">
                     <thead>
                         <tr>
@@ -37,6 +55,7 @@
                     </tbody>
                 </table>
             </div>
+
         </div>
 
         <!-- Second Column -->

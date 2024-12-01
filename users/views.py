@@ -175,3 +175,10 @@ def generate_report(request):
     pdf.save()
 
     return response
+
+
+
+@login_required
+def logout_view(request):
+    logout(request)
+    return redirect('login')
