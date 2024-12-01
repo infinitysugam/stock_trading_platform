@@ -10,7 +10,7 @@
 }
 
 .r1{
-    height:7%;
+    height:10%;
     background: #111111;
     
 }
@@ -54,7 +54,7 @@
 }
 
 .r2{
-    /* height: 15%; */
+    height: 10%;
     background-color: #111111;
 }
 .r3{
@@ -146,4 +146,25 @@
 .muji{
     height:60%;
     overflow: auto;
+}
+
+
+::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+    height: 12px; /* Height for horizontal scrollbar */
+}
+
+::-webkit-scrollbar-track {
+    background: #1a1a1a; /* Background color of the scrollbar track */
+    border-radius: 10px; /* Rounded corners */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1b1c1d; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners */
+    border: 3px solid #1a1a1a; /* Padding around thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #0056b3; /* Hover color */
 }

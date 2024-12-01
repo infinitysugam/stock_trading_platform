@@ -52,6 +52,19 @@
     <!-- Right Section -->
     <div class="right-section">
         <!-- Report Container -->
+         <div class="logout-container">
+            <button type="submit" id="logout" class="btn submit-btn" onclick="showLogoutPopup()">Logout</button>
+         </div>
+         <div id="logoutModal" class="modal">
+            <div class="modal-content">
+                <h2>Confirm Logout</h2>
+                <p>Are you sure you want to logout?</p>
+                <div class="modal-buttons">
+                    <button onclick="confirmLogout()" class="btn confirm-btn">Yes, Logout</button>
+                    <button onclick="closeLogoutPopup()" class="btn cancel-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
         <div class="report-container">
             <h3>Generate Report</h3>
             <form method="post" >
@@ -90,4 +103,20 @@
     </div>
 </div>
 
+<script>
+function showLogoutPopup() {
+    const modal = document.getElementById('logoutModal');
+    modal.style.display = 'flex';
+}
+
+function closeLogoutPopup() {
+    const modal = document.getElementById('logoutModal');
+    modal.style.display = 'none';
+}
+
+function confirmLogout() {
+    window.location.href = "{% url 'login' %}"; // Replace 'logout' with the actual logout URL
+}
+
+</script>
 {% endblock %}

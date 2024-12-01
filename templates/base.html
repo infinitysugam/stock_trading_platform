@@ -44,7 +44,7 @@
             </button>
             <div class="cc collapse navbar-collapse" id="navbarNav">
                 <ul class="profileIcon d-flex align-items-center">
-                    <li class="nav-item dropdown me-3">
+                    <li class="nav-item dropdown me-3" style="left: 43%;">
                         <a href="#" class="nav-link dropdown-toggle" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="markAllNotificationsAsSeen();">
                             <img class="imageclass" src="{% static 'images/notification.png' %}" alt="Notifications">
                             {% if notification_count > 0 %}
@@ -53,7 +53,7 @@
                                 </span>
                             {% endif %}
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" style="width: 300px; max-height: 400px; overflow-y: auto;">
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" style="width: 225px; max-height: 400px; overflow-y: auto;">
                             {% if notifications %}
                                 {% for notification in notifications %}
                                     <li class="dropdown-item {% if not notification.is_read %}bg-light{% endif %}">
@@ -82,43 +82,41 @@
         <div class="row flex-nowrap" style="margin-top: 70px;">
             <!-- Sidebar -->
             <div class="col-auto col-md-2 col-xl-1 px-0 sidebar ">
-                <div class="d-flex flex-column align-items-center align-items-sm-start px-2 pt-2 text-white min-vh-100 ">
-
-    
-                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start " id="menu">
-                        <li class="nav-item">
+                <div class="sidebar1 d-flex flex-column align-items-center align-items-sm-start px-2 pt-2 text-white min-vh-100">
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu" style="margin-top: 5%;">
+                        <li class="nav-item {% if request.resolver_match.url_name == 'trading_view' %}active{% endif %}">
                             <a href="/" class="nav-link align-middle px-2">
                                 <i class="fs-5 bi-house"></i>
                                 <span class="ms-1 d-none d-sm-inline">Home</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item {% if request.resolver_match.url_name == 'portfolio_management' %}active{% endif %}">
                             <a href="/portfolio_management/" class="nav-link align-middle px-2">
                                 <i class="fs-5 bi-graph-up"></i>
                                 <span class="ms-1 d-none d-sm-inline">Portfolio</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item {% if request.resolver_match.url_name == 'order_management' %}active{% endif %}">
                             <a href="/order_management/" class="nav-link align-middle px-2">
                                 <i class="fs-5 bi-speedometer2"></i>
                                 <span class="ms-1 d-none d-sm-inline">Order</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item {% if request.resolver_match.url_name == 'Risk' %}active{% endif %}">
                             <a href="/risk_management/" class="nav-link align-middle px-2">
                                 <i class="fs-5 bi-speedometer2"></i>
                                 <span class="ms-1 d-none d-sm-inline">Risk</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item {% if request.resolver_match.url_name == 'algorithmic_trading' %}active{% endif %}">
                             <a href="/algorithmic_trading/" class="nav-link align-middle px-2">
                                 <i class="fs-5 bi-speedometer2"></i>
                                 <span class="ms-1 d-none d-sm-inline">Algo Trade</span>
                             </a>
                         </li>
                     </ul>
-                    <hr>
                 </div>
+                
             </div>
     
             <!-- Main Content -->
