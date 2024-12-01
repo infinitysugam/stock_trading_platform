@@ -50,8 +50,7 @@
 }
 .r3{
     background: #111111;
-    height: 50%;
-    overflow: auto;
+    height: 70%;
     margin-bottom: 10px;
 }
 
@@ -132,4 +131,9 @@
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
+}
+
+.muji{
+    height:77%;
+    overflow: auto;
 }

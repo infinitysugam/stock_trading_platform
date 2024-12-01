@@ -49,50 +49,54 @@
                 <span style="margin-top: 4%;">Invested Amount</span>
                 <span class="cashnum">${{ invested_amount }}</span>
             </div>
-            <table class="portfolio-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Quantity</th>
-                        <th>Average Price</th>
-                        <th>Current Price</th>
-                        <th>Returns</th>
-                        <th>Graph</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for portfolio in portfolios %}
-                    <tr>
-                        <td>{{ portfolio.instrument }}</td>
-                        <td>{{ portfolio.quantity }}</td>
-                        <td>{{ portfolio.average_price }}</td>
-                        <td>{{ portfolio.current_price|floatformat:4 }}</td>
-                        <td>
-                            {% if portfolio.returns != 'N/A' %}
-                            <span style="color: {% if portfolio.returns > 0 %}green{% else %}red{% endif %};">
-                                {% if portfolio.returns > 0 %}
-                                    ▲
-                                {% elif portfolio.returns < 0 %}
-                                    ▼
+            <div class="muji">
+
+            
+                <table class="portfolio-table col-4 half-column">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Quantity</th>
+                            <th>Average Price</th>
+                            <th>Current Price</th>
+                            <th>Returns</th>
+                            <th>Graph</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for portfolio in portfolios %}
+                        <tr>
+                            <td>{{ portfolio.instrument }}</td>
+                            <td>{{ portfolio.quantity }}</td>
+                            <td>{{ portfolio.average_price }}</td>
+                            <td>{{ portfolio.current_price|floatformat:4 }}</td>
+                            <td>
+                                {% if portfolio.returns != 'N/A' %}
+                                <span style="color: {% if portfolio.returns > 0 %}green{% else %}red{% endif %};">
+                                    {% if portfolio.returns > 0 %}
+                                        ▲
+                                    {% elif portfolio.returns < 0 %}
+                                        ▼
+                                    {% endif %}
+                                    ${{ portfolio.abs_returns|floatformat:2 }}
+                                </span>
+                                {% else %}
+                                    N/A
                                 {% endif %}
-                                ${{ portfolio.abs_returns|floatformat:2 }}
-                            </span>
-                            {% else %}
-                                N/A
-                            {% endif %}
-                        </td>
-                        <td>
-                            <div class="graph" data-symbol="{{ portfolio.instrument|format_symbol }}"></div>
-                        </td>
-                        
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="6" style="text-align: center;">No data available in your portfolio.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                            </td>
+                            <td>
+                                <div class="graph" data-symbol="{{ portfolio.instrument|format_symbol }}"></div>
+                            </td>
+                            
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" style="text-align: center;">No data available in your portfolio.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
