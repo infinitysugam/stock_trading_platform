@@ -1,15 +1,16 @@
 .container{
-    margin: 20px 20px 20px 20px;
+    /* margin: 20px 20px 20px 20px; */
     position: sticky;
     left: 5%;
     height: 80%;
     top: 10%;
     gap:20px;
     width: 100%;
+    display: contents;
 }
 
 .r1{
-    height:20%;
+    height:7%;
     background: #111111;
     
 }
@@ -23,14 +24,22 @@
 .ptag{
     display: flex;
     color: aliceblue;
-    width: 32%;
+    width: 30%;
+    justify-content: space-between;
+    margin-top: 2%;
+    font-size: large;
+}
+.ptag2{
+    display: flex;
+    color: aliceblue;
+    width: 31%;
     justify-content: space-between;
     margin-top: 2%;
     font-size: large;
 }
 
 .cashnum{
-    font-size: 2rem;
+    font-size: 1.5rem;
     font:bold;
     color: #f6f8fa;
 }
@@ -45,13 +54,13 @@
 }
 
 .r2{
-    height: 15%;
+    /* height: 15%; */
     background-color: #111111;
 }
 .r3{
     background: #111111;
     height: 70%;
-    margin-bottom: 10px;
+    margin-bottom: 10%;
 }
 
 
@@ -67,6 +76,7 @@
     padding: 10px;
     text-align: center;
     border-radius: 10px;
+    font-size: small;
 }
 
 .portfolio-table td{
@@ -97,7 +107,7 @@
 }
 
 .deposit-section h4{
-    size: 1rem;
+    size: 0.5rem;
     color: #f6f8fa;
 }
 
@@ -134,6 +144,6 @@
 }
 
 .muji{
-    height:77%;
+    height:60%;
     overflow: auto;
 }

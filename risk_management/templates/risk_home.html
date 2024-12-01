@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="{% static 'css/risk.css' %}">
 
 <div class="container">
-    <div>
+    <div class="bttns">
         <button class="btn edit-btn" onclick="enableEditing()">EDIT</button>
         <button class="btn save-btn" onclick="saveStopLoss()">SAVE</button>
     </div>
@@ -67,8 +67,6 @@
             {% endfor %}
         </tbody>
     </table>
-</div>
-
 
     <h4>Transaction History</h4>
     <table class="risk-table">
@@ -175,6 +173,10 @@ function getCSRFToken() {
     return cookieValue || '';
 }
 </script>
+</div>
+
+
+ 
 
 
 {% endblock %}

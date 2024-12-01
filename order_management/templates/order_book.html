@@ -39,24 +39,13 @@
             </div>
         </div>
 
-        <!-- Place Order Form -->
+        <!-- Second Column -->
         <div class="column second-column">
-            <form method="get" action="{% url 'order_management' %}">
-                <div class="instrument-selector">
-
-                    <select name="instrument" id="instrument" class="instrument-dropdown" onchange="this.form.submit()">
-                        <option value="EUR_USD" {% if instrument == "EUR_USD" %}selected{% endif %}>EUR/USD</option>
-                        <option value="GBP_USD" {% if instrument == "GBP_USD" %}selected{% endif %}>GBP/USD</option>
-                        <option value="USD_JPY" {% if instrument == "USD_JPY" %}selected{% endif %}>USD/JPY</option>
-                        <option value="AUD_USD" {% if instrument == "AUD_USD" %}selected{% endif %}>AUD/USD</option>
-                    </select>
-                </div>
-            </form>
-            <div class="place-order">
+            <!-- Buy/Sell Container -->
+            <div class="buy-sell-container">
                 <h4>Place an Order</h4>
                 <form method="post" action="{% url 'order_management' %}">
                     {% csrf_token %}
-                    <!-- Order Type Buttons -->
                     <div class="order-type-buttons">
                         <input type="radio" id="buy" name="order_type" value="buy" required>
                         <label for="buy" class="btn-buy">Buy</label>
@@ -64,7 +53,6 @@
                         <label for="sell" class="btn-sell">Sell</label>
                     </div>
 
-                    <!-- Input Row -->
                     <div class="input-row">
                         <div class="input-group">
                             <label for="price">Price</label>
@@ -102,74 +90,52 @@
                             >
                         </div>
                     </div>
+                    <br>
 
                     <input type="hidden" name="instrument" value="{{ instrument }}">
 
-                    <!-- Submit Button -->
+
                     <button type="submit" class="btn-submit">Place Order</button>
                 </form>
-
-                                <!-- Messages Section -->
-<div class="container mt-4">
-    {% if messages %}
-    {% for message in messages %}
-        <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
-            {{ message }}
-        </div>
-    {% endfor %}
-{% endif %}
-</div>
-        
-    
+                
             </div>
-        </div>
-    </div>
-
-    <!-- Second Row -->
-    <div class="row second-row">
-        <h4>Transaction History</h4>
-        <table class="transaction-history">
-            <thead>
-                <tr>
-                    <th>Order Type</th>
-                    <th>Instrument</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Filled Quantity</th>
-                    <th>Left Quantity</th>
-                    <th>Status</th>
-                    <th>Timestamp</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for order in page_obj %}
-                <tr>
-                    <td>{{ order.order_type|title }}</td>
-                    <td>{{ order.instrument }}</td>
-                    <td>{{ order.price }}</td>
-                    <td>{{ order.quantity }}</td>
-                    <td>{{ order.filled_quantity }}</td>
-                    <td>{{ order.remaining_quantity }}</td>
-                    <td>{{ order.status|title }}</td>
-                    <td>{{ order.timestamp }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="8" class="no-orders">No orders found.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <div class="pagination">
-            {% if page_obj.has_previous %}
-            <a href="?page=1">First</a>
-            <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
-            {% endif %}
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-            {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">Next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
-            {% endif %}
+            <br>
+            <!-- Transaction History -->
+            <div class="transaction-history-container">
+                <h4>Transaction History</h4>
+                <table class="transaction-history">
+                    <thead>
+                        <tr>
+                            <th>Order Type</th>
+                            <th>Instrument</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Filled Quantity</th>
+                            <th>Left Quantity</th>
+                            <th>Status</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in page_obj %}
+                        <tr>
+                            <td>{{ order.order_type|title }}</td>
+                            <td>{{ order.instrument }}</td>
+                            <td>{{ order.price }}</td>
+                            <td>{{ order.quantity }}</td>
+                            <td>{{ order.filled_quantity }}</td>
+                            <td>{{ order.remaining_quantity }}</td>
+                            <td>{{ order.status|title }}</td>
+                            <td>{{ order.timestamp }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="8" class="no-orders">No orders found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
