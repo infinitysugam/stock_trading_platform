@@ -100,3 +100,36 @@ def mark_notification_as_seen(request):
 
 
 
+def cash_allocation_graph(request):
+
+    amount_details = AmountDetails.objects.get(user=request.user)
+    total_amount = amount_details.cash_amount + amount_details.used_amount
+
+    portfolio = Portfolio.objects.filter(user=request.user)
+
+    # Calculate allocation for each instrument
+    allocation_data = []
+    total_allocated = Decimal(0)
+
+    for item in portfolio:
+        allocation = item.quantity * item.average_price
+        total_allocated += allocation
+        allocation_data.append({
+            'name': item.instrument,
+            'y': float(allocation),  # Convert to float for JSON serialization
+        })
+
+    # Add cash allocation as the remaining amount
+    cash_allocation = total_amount - total_allocated
+    allocation_data.append({
+        'name': 'Cash',
+        'y': float(cash_allocation),
+    })
+
+    # Prepare the JSON response
+    response_data = {
+        'chart_data': allocation_data,
+        'total_amount': float(total_amount),
+    }
+
+    return JsonResponse(response_data)

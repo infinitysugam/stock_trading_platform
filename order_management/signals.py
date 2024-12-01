@@ -18,7 +18,6 @@ def update_portfolio(sender, instance, **kwargs):
     Update the portfolio whenever an order is made.
     """
 
-    print("#####################Signal has been fired")
     user = instance.user
     instrument = instance.instrument
     order_type = instance.order_type
@@ -69,7 +68,16 @@ def update_portfolio(sender, instance, **kwargs):
                 portfolio.average_price = Decimal(0.0)  # Reset average price if no holdings
 
             amount_details.cash_amount += total_cost
-            amount_details.used_amount -= total_cost
+            
+            temp = amount_details.used_amount-total_cost
+            if temp>0:
+                print("###############>0")
+                amount_details.used_amount -= total_cost
+            else:
+                print("##############<0")
+                amount_details.used_amount=0
+                amount_details.cash_amount -= abs(temp)
+
 
         #print(portfolio.quantity)
 

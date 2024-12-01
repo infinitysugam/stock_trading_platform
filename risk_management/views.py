@@ -10,7 +10,7 @@ from order_management.models import Order
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.http import JsonResponse
-
+from portfolio_management.views import add_notification
 # Create your views here.
 
 @login_required
@@ -46,7 +46,7 @@ def home(request):
 
 
     for portfolio in portfolios:
-        if portfolio.stop_loss!=0 and portfolio.abs_return_percentage>=portfolio.stop_loss:
+        if portfolio.stop_loss!=0 and portfolio.return_percentage<=(-portfolio.stop_loss):
             params={
                 'instrument':portfolio.instrument,
                 'quantity':portfolio.quantity,
@@ -74,6 +74,8 @@ def update_stop_loss(request):
                 portfolio.stop_loss = item['stop_loss']
                 portfolio.save()
 
+            message=f"Stop Loss Value Updated for instrument {portfolio.instrument} to {portfolio.stop_loss}%"
+            add_notification(request,message)
             return JsonResponse({'success': True, 'message': 'Stop Loss values updated successfully!'})
         except Exception as e:
             return JsonResponse({'success': False, 'message': str(e)})
