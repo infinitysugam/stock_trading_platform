@@ -34,24 +34,7 @@ def portfolio(request):
 
 
     
-        # Handle deposit functionality
-    if request.method == 'POST' and 'deposit_amount' in request.POST:
-        try:
-            deposit_amount = Decimal(request.POST.get('deposit_amount', 0))
-            print(deposit_amount)
-            if deposit_amount <= 0:
-                messages.error(request, "Deposit amount must be greater than zero.")
-            else:
-                deposit.cash_amount += deposit_amount
-                deposit.save()
-                message = f'''${deposit_amount} Amount Deposited in the platform.'''
 
-                add_notification(request,message)
-                messages.success(request, f"Successfully deposited ${deposit_amount:.2f}. Your new balance is ${deposit.cash_amount:.2f}.")
-                return redirect('portfolio_management')  # Avoid form resubmission
-        except Exception as e:
-            print(e)
-            messages.error(request, "Invalid deposit amount. Please try again.")
 
     
     portfolios = Portfolio.objects.filter(user=request.user)

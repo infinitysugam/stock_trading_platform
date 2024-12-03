@@ -116,7 +116,13 @@
 
                     <button type="submit" class="btn-submit">Place Order</button>
                 </form>
-                
+                {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                    <p class="{{ message.tags }}">{{ message }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
             </div>
             <br>
             <!-- Transaction History -->

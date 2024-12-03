@@ -141,6 +141,7 @@ def order_book_view(request):
                 
                 message = f'''{order_type} order placed for instrument {instrument}.\n Staus = {status}.
                 Total Quantity = {order_quantity} \n Filled Quantity = {filled_quantity} \n Price = {order_price}'''
+                messages.success(request,"Order Placed")
 
                 add_notification(request,message)
                 

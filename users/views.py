@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login
 
 from portfolio_management.views import add_notification
 from order_management.models import Order
-
+from portfolio_management.models import AmountDetails
 
 
 from datetime import datetime
@@ -23,7 +23,7 @@ def register(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
-            messages.success(request, f"Account created for {username}! You can now log in.")
+            #messages.success(request, f"Account created for {username}! You can now log in.")
             return redirect('login')  # Replace 'login' with your desired route
         else:
             # Pass the form with errors back to the template
@@ -100,6 +100,36 @@ def profile(request):
 
         if request.method == 'POST' and 'start_date' in request.POST:
             return generate_report(request)
+        
+
+
+                # Handle deposit functionality
+        if request.method == 'POST' and 'deposit_amount' in request.POST:
+            try:
+
+
+                deposit, created = AmountDetails.objects.get_or_create(
+                user=request.user,
+                defaults={'cash_amount': 0, 'used_amount': 0}  # Default values for a new user
+            )
+                cash_left = deposit.cash_amount if deposit else 0  # Default to 0 if no deposit exists
+                invested_amount = deposit.used_amount if deposit else 0
+
+                deposit_amount = Decimal(request.POST.get('deposit_amount', 0))
+                print(deposit_amount)
+                if deposit_amount <= 0:
+                    messages.error(request, "Deposit amount must be greater than zero.")
+                else:
+                    deposit.cash_amount += deposit_amount
+                    deposit.save()
+                    message = f'''${deposit_amount} Amount Deposited in the platform.'''
+
+                    add_notification(request,message)
+                    messages.success(request, f"Successfully deposited ${deposit_amount:.2f}. Your new balance is ${deposit.cash_amount:.2f}.")
+                    return redirect('profile')  # Avoid form resubmission
+            except Exception as e:
+                print(e)
+                messages.error(request, "Invalid deposit amount. Please try again.")
 
         return render(request, 'profile.html', {'user': request.user})
 
