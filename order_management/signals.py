@@ -71,10 +71,8 @@ def update_portfolio(sender, instance, **kwargs):
             
             temp = amount_details.used_amount-total_cost
             if temp>0:
-                print("###############>0")
                 amount_details.used_amount -= total_cost
             else:
-                print("##############<0")
                 amount_details.used_amount=0
                 amount_details.cash_amount -= abs(temp)
 
