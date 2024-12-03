@@ -15,7 +15,73 @@
             </div>
         </div>
         <div class="c2 col half-column">
-            <div class="deposit-section">
+            <div id="cash-allocation-chart" style="width: 80%; height: 350px; margin: auto;"></div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const endpoint = '/cash_allocation/'; // Update with your actual endpoint
+
+    // Fetch the data from the backend
+    fetch(endpoint)
+        .then(response => response.json())
+        .then(data => {
+            const chartData = data.chart_data;
+            const totalAmount = data.total_amount;
+
+            // Render the pie chart
+            Highcharts.chart('cash-allocation-chart', {
+                chart: {
+                    type: 'pie',
+                    backgroundColor: null,
+                },
+                title: {
+                    text: `Cash Allocation by Instrument <br>Total: $${totalAmount.toFixed(2)}`,
+                    style: {
+                        color: 'white',
+                    },
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>${point.y:.2f}</b> ({point.percentage:.1f}%)',
+                    backgroundColor: 'white',
+                    borderColor: 'black',
+                    style: {
+                        color: 'black',
+                    },
+                },
+                accessibility: {
+                    point: {
+                        valueSuffix: '%',
+                    },
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            style: {
+                                color: 'white',
+                            },
+                            format: '<b>{point.name}</b>: ${point.y:.2f} ({point.percentage:.1f}%)',
+                        },
+                    },
+                },
+                series: [
+                    {
+                        name: 'Cash Allocation',
+                        colorByPoint: true,
+                        data: chartData,
+                    },
+                ],
+                credits: {
+                    enabled: false,
+                },
+            });
+        })
+        .catch(error => console.error('Error fetching chart data:', error));
+});
+
+</script>
+            <!-- <div class="deposit-section">
                 <h4>Deposit Amount</h4>
                 <form method="post">
                     {% csrf_token %}
@@ -29,7 +95,7 @@
                     {% endfor %}
                 </div>
                 {% endif %}
-            </div>
+            </div> -->
         </div>
     </div>
 
