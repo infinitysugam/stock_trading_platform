@@ -52,14 +52,14 @@ jobs:
       # Step 5: Set up the database
       - name: Apply migrations
         env:
-          DATABASE_URL: mysql://django:django_password@127.0.0.1:3306/stock_trading
+          DATABASE_URL: mysql://stock_trading:root@127.0.0.1:3306/stock_trading
         run: |
           python manage.py migrate
 
       # Step 6: Run tests
       - name: Run tests
         env:
-          DATABASE_URL: mysql://django:django_password@127.0.0.1:3306/stock_trading
+          DATABASE_URL: mysql://stock_trading:root@127.0.0.1:3306/stock_trading
         run: python manage.py test
 
       # Step 7: Collect static files
