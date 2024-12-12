@@ -3,10 +3,10 @@ name: Django CI/CD Pipeline
 on:
   push:
     branches:
-      - nikhil_raja
+      - develop
   pull_request:
     branches:
-      - nikhil_raja
+      - develop
 
 jobs:
   test:
