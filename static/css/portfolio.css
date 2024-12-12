@@ -1,14 +1,16 @@
 .container{
-    margin: 20px 20px 20px 20px;
-    position: relative;
+    /* margin: 20px 20px 20px 20px; */
+    position: sticky;
     left: 5%;
-    height: 75%;
+    height: 80%;
     top: 10%;
     gap:20px;
+    width: 100%;
+    display: contents;
 }
 
 .r1{
-    height:20%;
+    height:10%;
     background: #111111;
     
 }
@@ -27,9 +29,17 @@
     margin-top: 2%;
     font-size: large;
 }
+.ptag2{
+    display: flex;
+    color: aliceblue;
+    width: 31%;
+    justify-content: space-between;
+    margin-top: 2%;
+    font-size: large;
+}
 
 .cashnum{
-    font-size: 2rem;
+    font-size: 1.5rem;
     font:bold;
     color: #f6f8fa;
 }
@@ -37,19 +47,20 @@
 .ptag1{
     display: flex;
     color: aliceblue;
-    width: 60%;
+    width: 65%;
     justify-content: space-between;
     margin-top: 5%;
     font-size: large;
 }
 
 .r2{
-    height: 15%;
+    height: 10%;
     background-color: #111111;
 }
 .r3{
     background: #111111;
-    height: 60%;
+    height: 70%;
+    margin-bottom: 10%;
 }
 
 
@@ -58,12 +69,14 @@
 .portfolio-table{
     width: -webkit-fill-available;
     margin-top: 4%;
+    margin-bottom: 3%;
     background-color: #1a1e23;
     color: #ffffff;
     font-weight: bold;
     padding: 10px;
     text-align: center;
     border-radius: 10px;
+    font-size: small;
 }
 
 .portfolio-table td{
@@ -83,4 +96,75 @@
 
 .portfolio-table tbody tr:nth-child(even) td {
     background-color: #15191e;
+}
+
+
+.deposit-section{
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    margin: 3%;
+}
+
+.deposit-section h4{
+    size: 0.5rem;
+    color: #f6f8fa;
+}
+
+.deposit-section input{
+
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #444;
+        border-radius: 5px;
+        background-color: #1e1e1e;
+        color: #ffffff;
+        outline: none;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+}
+
+.deposit-section form{
+    display: flex;
+    gap:15px;
+    width: -webkit-fill-available;
+}
+.deposit-section button{
+    width: 60%;
+    padding: 15px;
+    font-size: 1.2rem;
+
+    background: linear-gradient(135deg, #28a745, #4caf50);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.muji{
+    height:60%;
+    overflow: auto;
+}
+
+
+::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+    height: 12px; /* Height for horizontal scrollbar */
+}
+
+::-webkit-scrollbar-track {
+    background: #1a1a1a; /* Background color of the scrollbar track */
+    border-radius: 10px; /* Rounded corners */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1b1c1d; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners */
+    border: 3px solid #1a1a1a; /* Padding around thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #0056b3; /* Hover color */
 }

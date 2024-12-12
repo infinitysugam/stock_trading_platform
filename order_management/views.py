@@ -11,6 +11,7 @@ import requests
 
 from .models import Order
 from portfolio_management.models import AmountDetails,Portfolio
+from portfolio_management.views import add_notification
 
 @login_required
 def home(request):
@@ -72,7 +73,11 @@ def order_book_view(request):
                 # Buy Order Logic
                 if order_type == "buy":
                         if cash_left<(order_price*order_quantity):
-                        #Logic for deposit
+
+                                message = f'''Insufficient funds.Please deposit more cash'''
+
+                                add_notification(request,message)
+                                #Logic for deposit
                                 messages.error(request, "Insufficient funds. Please deposit more cash.")
                                 return redirect('order_management')  # Redirect to the same or another page
                         else:
@@ -97,6 +102,10 @@ def order_book_view(request):
         # Sell Order Logic
                 elif order_type == "sell":
                         if quantity_holding<order_quantity:
+
+                                message = f'''Insufficient holdings for this currency pair'''
+
+                                add_notification(request,message)
                                 messages.error(request, "Insufficient holdings for this currency pair")
                                 return redirect('order_management')
                         else:
@@ -129,6 +138,13 @@ def order_book_view(request):
                 status=status,
                 user = request.user,
         )
+                
+                message = f'''{order_type} order placed for instrument {instrument}.\n Staus = {status}.
+                Total Quantity = {order_quantity} \n Filled Quantity = {filled_quantity} \n Price = {order_price}'''
+
+                add_notification(request,message)
+                
+
 
                 # Redirect back to the order book view after placing the order
                 return redirect('order_management')
@@ -165,14 +181,19 @@ def order_book_view_deprecated(request):
 
 
 
-def automated_trading(request,params):
+def automated_trading(request, params):
+
+
+        order_type=params['order_type']
+        order_price = params['price']
+        order_quantity = params['quantity']
+        order_instrument = params['instrument']
 
         accountID = "101-001-29894202-001"
         token="d6214def02031bec4369cb5ed02b8d8f-811f3087858ea0d03027ba6d5f34a968"
         api = API(access_token=token)
-        instrument  = request.GET.get("instrument","EUR_USD")
         inst_params ={
-                "instruments": instrument
+                "instruments": order_instrument
                 }
         # r = pricing.PricingInfo( accountID=accountID,params=inst_params)
         # rv = api.request(r)
@@ -191,16 +212,13 @@ def automated_trading(request,params):
     # Sort bids by lowest to highest
         bids = sorted(bids, key=lambda x: float(x['price']),reverse=True)
 
+
+
         deposit = AmountDetails.objects.filter(user=request.user).first()
         cash_left = deposit.cash_amount if deposit else 0  
 
-        portfolio_row = Portfolio.objects.filter(user=request.user,instrument=request.POST.get("instrument")).first()
+        portfolio_row = Portfolio.objects.filter(user=request.user,instrument=order_instrument).first()
         quantity_holding = portfolio_row.quantity if portfolio_row else 0
-
-        order_type=params.order_type
-        order_price = params.order_price
-        order_quantity = params.order_quantity
-        order_instrument = params.order_instrument
 
 
 
@@ -238,24 +256,40 @@ def automated_trading(request,params):
                         messages.error(request, "Insufficient holdings for this currency pair")
                         return redirect('order_management')
                 else:
+                        if order_price is not None:
 
-                        for bid in bids:
-                                bid_price = float(bid["price"])
-                                bid_liquidity = int(bid["liquidity"])
+                                for bid in bids:
+                                        bid_price = float(bid["price"])
+                                        bid_liquidity = int(bid["liquidity"])
 
-                                if bid_price == order_price: 
-                                        # Check for matching buyers
-                                        if bid_liquidity >= order_quantity:  # Fully filled
-                                                status = "filled"
-                                                filled_quantity = order_quantity
-                                                break
-                                        else:
-                                                status="partially_filled"
-                                                filled_quantity = bid_liquidity
-                                                break
-                                else:  # Partially filled               
-                                        status = "pending"
-                                        filled_quantity = 0
+                                        if bid_price == order_price: 
+                                                # Check for matching buyers
+                                                if bid_liquidity >= order_quantity:  # Fully filled
+                                                        status = "filled"
+                                                        filled_quantity = order_quantity
+                                                        break
+                                                else:
+                                                        status="partially_filled"
+                                                        filled_quantity = bid_liquidity
+                                                        break
+                                        else:  # Partially filled               
+                                                status = "pending"
+                                                filled_quantity = 0
+                        else:
+                                bid_price = max(asks, key=lambda x: float(x['price']))['price']
+                                bid_liquidity = max(asks, key=lambda x: float(x['price']))['liquidity']
+                                order_price=bid_price
+                                if bid_liquidity >= order_quantity:
+                                                        
+                                                        status = "filled"
+                                                        filled_quantity = order_quantity
+                                                        
+                                else:
+                                                        status="partially_filled"
+                                                        filled_quantity = bid_liquidity
+                                                        
+
+
 
         
         Order.objects.create(               
@@ -265,5 +299,11 @@ def automated_trading(request,params):
         quantity=order_quantity,  # Original quantity
         filled_quantity=filled_quantity,
         status=status,
+        order_source = 'automated',
         user = request.user,
 )
+        
+        message = f'''{order_type} order placed for instrument {order_instrument}.\n Staus = {status}.
+                Total Quantity = {order_quantity} \n Filled Quantity = {filled_quantity} \n Price = {order_price}'''
+
+        add_notification(request,message)

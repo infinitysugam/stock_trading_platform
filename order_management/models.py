@@ -14,6 +14,11 @@ class Order(models.Model):
         ('filled', 'Filled'),
     ]
 
+    ORDER_SOURCE = [
+        ('manual','manual'),
+        ('automated','automated'),
+    ]
+
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     order_type = models.CharField(max_length=4, choices=ORDER_TYPES)
     instrument = models.CharField(max_length=10)  # e.g., EUR_USD
@@ -21,6 +26,7 @@ class Order(models.Model):
     quantity = models.BigIntegerField()
     filled_quantity = models.BigIntegerField(default=0)  # Quantity that has been filled
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    order_source = models.CharField(max_length=20,choices=ORDER_SOURCE,default='manual' )
     timestamp = models.DateTimeField(auto_now_add=True)
 
 

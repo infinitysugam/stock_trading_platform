@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="{% static 'css/risk.css' %}">
 
 <div class="container">
-    <div>
+    <div class="bttns">
         <button class="btn edit-btn" onclick="enableEditing()">EDIT</button>
         <button class="btn save-btn" onclick="saveStopLoss()">SAVE</button>
     </div>
@@ -63,6 +63,42 @@
             {% empty %}
             <tr>
                 <td colspan="4" style="text-align: center;">No data available in your portfolio.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h4>Transaction History</h4>
+    <table class="risk-table">
+        <thead>
+            <tr>
+                <th>Order Type</th>
+                <th>Instrument</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Filled Quantity</th>
+                <th>Left Quantity</th>
+                <th>Status</th>
+                <th>Trading Source</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in page_obj %}
+            <tr>
+                <td>{{ order.order_type|title }}</td>
+                <td>{{ order.instrument }}</td>
+                <td>{{ order.price }}</td>
+                <td>{{ order.quantity }}</td>
+                <td>{{ order.filled_quantity }}</td>
+                <td>{{ order.remaining_quantity }}</td>
+                <td>{{ order.status|title }}</td>
+                <td>{{ order.order_source }}
+                <td>{{ order.timestamp }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8" class="no-orders">No orders found.</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -137,6 +173,10 @@ function getCSRFToken() {
     return cookieValue || '';
 }
 </script>
+</div>
+
+
+ 
 
 
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
-{% block content %} 
-
+{% load custom_filters %}
+{% block content %}
 
 <link rel="stylesheet" href="{% static 'css/portfolio.css' %}">
 
@@ -9,23 +9,85 @@
     <!-- First Row -->
     <div class="r1 row first-row">
         <div class="c1 col half-column">
-            <!-- Content for the first column -->
             <div class="ptag1">
-                <span style="margin-top: 4%;">Total Amount</span>
-                <span class="cashnum">${{ cash_left }}</span>
+                <span style="margin-top: 1%;">Total Amount</span>
+                <span class="cashnum">${{ total_amount }}</span>
             </div>
-
         </div>
         <div class="c2 col half-column">
-              <!-- Deposit Section -->
-              <div class="deposit-section">
-                <h3>Deposit Amount</h3>
+            <div id="cash-allocation-chart" style="width: 80%; height: 350px; margin: auto;"></div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const endpoint = '/cash_allocation/'; // Update with your actual endpoint
+
+    // Fetch the data from the backend
+    fetch(endpoint)
+        .then(response => response.json())
+        .then(data => {
+            const chartData = data.chart_data;
+            const totalAmount = data.total_amount;
+
+            // Render the pie chart
+            Highcharts.chart('cash-allocation-chart', {
+                chart: {
+                    type: 'pie',
+                    backgroundColor: null,
+                },
+                title: {
+                    text: `Cash Allocation by Instrument <br>Total: $${totalAmount.toFixed(2)}`,
+                    style: {
+                        color: 'white',
+                    },
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>${point.y:.2f}</b> ({point.percentage:.1f}%)',
+                    backgroundColor: 'white',
+                    borderColor: 'black',
+                    style: {
+                        color: 'black',
+                    },
+                },
+                accessibility: {
+                    point: {
+                        valueSuffix: '%',
+                    },
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            style: {
+                                color: 'white',
+                            },
+                            format: '<b>{point.name}</b>: ${point.y:.2f} ({point.percentage:.1f}%)',
+                        },
+                    },
+                },
+                series: [
+                    {
+                        name: 'Cash Allocation',
+                        colorByPoint: true,
+                        data: chartData,
+                    },
+                ],
+                credits: {
+                    enabled: false,
+                },
+            });
+        })
+        .catch(error => console.error('Error fetching chart data:', error));
+});
+
+</script>
+            <!-- <div class="deposit-section">
+                <h4>Deposit Amount</h4>
                 <form method="post">
                     {% csrf_token %}
                     <input type="number" name="deposit_amount" step="0.01" placeholder="Enter amount to deposit" required>
-                    <button type="submit" class="deposit-btn">Deposit</button>
+                    <button type="submit" >Deposit</button>
                 </form>
-                <!-- Display success/error messages -->
                 {% if messages %}
                 <div class="messages">
                     {% for message in messages %}
@@ -33,71 +95,103 @@
                     {% endfor %}
                 </div>
                 {% endif %}
-            </div>
-           
+            </div> -->
         </div>
     </div>
-        <!-- Second Row -->
-        <div class="r2 row second-row">
-            <div class="c3 col full-column">
-                <div class="ptag">
-                    <span style="margin-top: 4%;">Cash Amount</span>
-                    <span class="cashnum">${{ cash_left }}</span>
-                </div>
-                
-            </div>
-        </div>
 
     <!-- Second Row -->
+    <div class="r2 row second-row">
+        <div class="c3 col full-column">
+            <div class="ptag2">
+                <span style="margin-top: 1%;">Cash Amount</span>
+                <span class="cashnum">${{ cash_left }}</span>
+            </div>
+        </div>
+    </div>
+
     <div class="r3 row second-row">
         <div class="c4 col full-column">
             <div class="ptag">
-                <span style="margin-top: 4%;">Invested Amount</span>
+                <span style="margin-top: 1%;">Invested Amount</span>
                 <span class="cashnum">${{ invested_amount }}</span>
             </div>
-            <table class="portfolio-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Quantity</th>
-                        <th>Average Price</th>
-                        <th>Current Price</th>
-                        <th>Returns</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for portfolio in portfolios %}
-                    <tr>
-                        <td>{{ portfolio.instrument }}</td>
-                        <td>{{ portfolio.quantity }}</td>
-                        <td>{{ portfolio.average_price }}</td>
-                        <td>{{ portfolio.current_price|floatformat:4 }}</td>
-                        <td>
-                            {% if portfolio.returns != 'N/A' %}
-                            <span style="color: {% if portfolio.returns > 0 %}green{% else %}red{% endif %};">
-                                {% if portfolio.returns > 0 %}
-                                    ▲
-                                {% elif portfolio.returns < 0 %}
-                                    ▼
+            <div class="muji">
+
+            
+                <table class="portfolio-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Quantity</th>
+                            <th>Average Price</th>
+                            <th>Current Price</th>
+                            <th>Returns</th>
+                            <th>Graph</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for portfolio in portfolios %}
+                        <tr>
+                            <td>{{ portfolio.instrument }}</td>
+                            <td>{{ portfolio.quantity }}</td>
+                            <td>{{ portfolio.average_price }}</td>
+                            <td>{{ portfolio.current_price|floatformat:4 }}</td>
+                            <td>
+                                {% if portfolio.returns != 'N/A' %}
+                                <span style="color: {% if portfolio.returns > 0 %}green{% else %}red{% endif %};">
+                                    {% if portfolio.returns > 0 %}
+                                        ▲
+                                    {% elif portfolio.returns < 0 %}
+                                        ▼
+                                    {% endif %}
+                                    ${{ portfolio.abs_returns|floatformat:2 }}
+                                </span>
+                                {% else %}
+                                    N/A
                                 {% endif %}
-                                ${{ portfolio.abs_returns|floatformat:2 }} <!-- Use absolute value for display -->
-                            </span>
-                            {% else %}
-                                N/A
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="4" style="text-align: center;">No data available in your portfolio.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                            </td>
+                            <td>
+                                <div class="graph" data-symbol="{{ portfolio.instrument|format_symbol }}"></div>
+                            </td>
+                            
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" style="text-align: center;">No data available in your portfolio.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
 
-
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const graphs = document.querySelectorAll('.graph');
+        graphs.forEach(graph => {
+            const symbol = graph.getAttribute('data-symbol');
+            const widgetScript = document.createElement('script');
+            widgetScript.type = 'text/javascript';
+            widgetScript.src = 'https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js';
+            widgetScript.async = true;
+            widgetScript.innerHTML = `
+            {
+                "symbol": "OANDA:${symbol}",
+                "width": "100%",
+                "height": "150",
+                "locale": "en",
+                "colorTheme": "dark",
+                "trendLineColor": "rgba(60, 120, 216, 1)",
+                "underLineColor": "rgba(109, 158, 235, 1)",
+                "underLineBottomColor": "rgba(109, 158, 235, 0)",
+                "isTransparent": true
+            }
+            `;
+            graph.appendChild(widgetScript);
+        });
+    });
+</script>
 
 {% endblock %}

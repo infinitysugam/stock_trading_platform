@@ -3,7 +3,11 @@ from django.dispatch import receiver
 from .models import Order
 from portfolio_management.models import Portfolio,AmountDetails
 
+from django.contrib.auth.models import User
+
+
 from decimal import Decimal
+from users.models import Profile
 
 import logging
 logger = logging.getLogger(__name__)
@@ -13,6 +17,7 @@ def update_portfolio(sender, instance, **kwargs):
     """
     Update the portfolio whenever an order is made.
     """
+
     user = instance.user
     instrument = instance.instrument
     order_type = instance.order_type
@@ -32,8 +37,9 @@ def update_portfolio(sender, instance, **kwargs):
         portfolio, created = Portfolio.objects.get_or_create(
             user=user,
             instrument=instrument,
-            defaults={'quantity': 0, 'average_price': Decimal(0.0)}
+            defaults={'quantity': 0, 'average_price': Decimal(0.0),'stop_loss':Decimal(0.0)}
         )
+
 
         if order_type == 'buy':
             # Weighted average price formula for buy orders
@@ -52,17 +58,35 @@ def update_portfolio(sender, instance, **kwargs):
             # Deduct quantity for sell orders
             portfolio.quantity -= filled_quantity
             # Prevent negative quantity
-            if portfolio.quantity < 0:
-                portfolio.quantity = 0
+
+
+            print("######################################")
+            print(portfolio.quantity,filled_quantity)
+            if portfolio.quantity <= 0:
+                portfolio.delete()  # Delete portfolio if quantity is 0
+            else:
                 portfolio.average_price = Decimal(0.0)  # Reset average price if no holdings
 
             amount_details.cash_amount += total_cost
-            amount_details.used_amount -= total_cost
+            
+            temp = amount_details.used_amount-total_cost
+            if temp>0:
+                print("###############>0")
+                amount_details.used_amount -= total_cost
+            else:
+                print("##############<0")
+                amount_details.used_amount=0
+                amount_details.cash_amount -= abs(temp)
+
 
         #print(portfolio.quantity)
 
-        portfolio.save()
         amount_details.save()
+
+
+        if portfolio.id:
+            portfolio.save()
+
 
 
 
@@ -81,3 +105,11 @@ def remove_from_portfolio(sender, instance, **kwargs):
             portfolio.delete()  # Remove portfolio if no quantity remains
     except Portfolio.DoesNotExist:
         pass
+
+
+
+@receiver(post_save, sender=User)
+def create_or_update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+    instance.profile.save() 

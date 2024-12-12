@@ -10,7 +10,25 @@
         <!-- Order Book -->
         <div class="column first-column">
             <h2>Order Book</h2>
-            <div class="inner-row-80">
+
+            <div class="selectInstrument" style=" width: 50%;display: flex; flex-direction: row;position: relative;left: 50%;gap: 20px;top:-5%"> 
+            <p style="color: aliceblue;font-size: 1rem;margin-top: 1%;">Select Instrument </p>
+
+                <form method="get" action="{% url 'order_management' %}">
+                    <div class="instrument-selector">
+    
+                        <select name="instrument" id="instrument" class="instrument-dropdown" onchange="this.form.submit()">
+                            <option value="EUR_USD" {% if instrument == "EUR_USD" %}selected{% endif %}>EUR/USD</option>
+                            <option value="GBP_USD" {% if instrument == "GBP_USD" %}selected{% endif %}>GBP/USD</option>
+                            <option value="USD_JPY" {% if instrument == "USD_JPY" %}selected{% endif %}>USD/JPY</option>
+                            <option value="AUD_USD" {% if instrument == "AUD_USD" %}selected{% endif %}>AUD/USD</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+
+
+            <div class="inner-row-80" style="height: 68vh;overflow: auto;">
                 <table class="order-book">
                     <thead>
                         <tr>
@@ -37,34 +55,23 @@
                     </tbody>
                 </table>
             </div>
+
         </div>
 
-        <!-- Place Order Form -->
+        <!-- Second Column -->
         <div class="column second-column">
-            <form method="get" action="{% url 'order_management' %}">
-                <div class="instrument-selector">
-
-                    <select name="instrument" id="instrument" class="instrument-dropdown" onchange="this.form.submit()">
-                        <option value="EUR_USD" {% if instrument == "EUR_USD" %}selected{% endif %}>EUR/USD</option>
-                        <option value="GBP_USD" {% if instrument == "GBP_USD" %}selected{% endif %}>GBP/USD</option>
-                        <option value="USD_JPY" {% if instrument == "USD_JPY" %}selected{% endif %}>USD/JPY</option>
-                        <option value="AUD_USD" {% if instrument == "AUD_USD" %}selected{% endif %}>AUD/USD</option>
-                    </select>
-                </div>
-            </form>
-            <div class="place-order">
+            <!-- Buy/Sell Container -->
+            <div class="buy-sell-container">
                 <h4>Place an Order</h4>
                 <form method="post" action="{% url 'order_management' %}">
                     {% csrf_token %}
-                    <!-- Order Type Buttons -->
                     <div class="order-type-buttons">
-                        <input type="radio" id="buy" name="order_type" value="buy" required>
+                        <input type="radio" id="buy" name="order_type" value="buy" required checked>
                         <label for="buy" class="btn-buy">Buy</label>
                         <input type="radio" id="sell" name="order_type" value="sell" required>
                         <label for="sell" class="btn-sell">Sell</label>
                     </div>
 
-                    <!-- Input Row -->
                     <div class="input-row">
                         <div class="input-group">
                             <label for="price">Price</label>
@@ -102,68 +109,52 @@
                             >
                         </div>
                     </div>
+                    <br>
 
                     <input type="hidden" name="instrument" value="{{ instrument }}">
 
-                    <!-- Submit Button -->
+
                     <button type="submit" class="btn-submit">Place Order</button>
                 </form>
-                {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                        <li class="{{ message.tags }}">{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
+                
             </div>
-        </div>
-    </div>
-
-    <!-- Second Row -->
-    <div class="row second-row">
-        <h4>Transaction History</h4>
-        <table class="transaction-history">
-            <thead>
-                <tr>
-                    <th>Order Type</th>
-                    <th>Instrument</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Filled Quantity</th>
-                    <th>Left Quantity</th>
-                    <th>Status</th>
-                    <th>Timestamp</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for order in page_obj %}
-                <tr>
-                    <td>{{ order.order_type|title }}</td>
-                    <td>{{ order.instrument }}</td>
-                    <td>{{ order.price }}</td>
-                    <td>{{ order.quantity }}</td>
-                    <td>{{ order.filled_quantity }}</td>
-                    <td>{{ order.remaining_quantity }}</td>
-                    <td>{{ order.status|title }}</td>
-                    <td>{{ order.timestamp }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="8" class="no-orders">No orders found.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <div class="pagination">
-            {% if page_obj.has_previous %}
-            <a href="?page=1">First</a>
-            <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
-            {% endif %}
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-            {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">Next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
-            {% endif %}
+            <br>
+            <!-- Transaction History -->
+            <div class="transaction-history-container">
+                <h4>Transaction History</h4>
+                <table class="transaction-history">
+                    <thead>
+                        <tr>
+                            <th>Order Type</th>
+                            <th>Instrument</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Filled Quantity</th>
+                            <th>Left Quantity</th>
+                            <th>Status</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in page_obj %}
+                        <tr>
+                            <td>{{ order.order_type|title }}</td>
+                            <td>{{ order.instrument }}</td>
+                            <td>{{ order.price }}</td>
+                            <td>{{ order.quantity }}</td>
+                            <td>{{ order.filled_quantity }}</td>
+                            <td>{{ order.remaining_quantity }}</td>
+                            <td>{{ order.status|title }}</td>
+                            <td>{{ order.timestamp }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="8" class="no-orders">No orders found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -175,6 +166,29 @@
         const total = price * quantity;
         document.getElementById('total').value = total.toFixed(5); // Display total with 5 decimal points
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const buyInput = document.getElementById('buy');
+        const sellInput = document.getElementById('sell');
+        const submitButton = document.querySelector('.btn-submit');
+
+        function updateButtonStyle() {
+            if (buyInput.checked) {
+                submitButton.style.background = 'linear-gradient(135deg, #28a745, #4caf50)'; // Green for Buy
+                submitButton.style.borderColor = '#218838'; // Optional styling
+            } else if (sellInput.checked) {
+                submitButton.style.background = 'linear-gradient(135deg, #c82333, #c73140)'; // Red for Sell
+                submitButton.style.borderColor = '#a71d2a'; // Optional styling
+            }
+        }
+
+        // Add event listeners to update the button style when a radio is selected
+        buyInput.addEventListener('change', updateButtonStyle);
+        sellInput.addEventListener('change', updateButtonStyle);
+
+        // Initial update
+        updateButtonStyle();
+    });
 </script>
 
 {% endblock %}

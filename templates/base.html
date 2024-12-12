@@ -33,7 +33,7 @@
 </head>
 <body>
     <div class="container-fluid">
-        <!-- Top Navbar -->
+<!-- Top Navbar -->
         <nav class="navbar navbar-expand-lg fixed-top" style="background-color: #0a1016;">
             <a class="navbar-brand ms-2" href="/">
                 <img src="{% static 'images/logo1.png' %}" alt="Logo" style="height: 40px; margin-right: 10px;">
@@ -42,7 +42,33 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="cc collapse navbar-collapse" id="navbarNav">
+                <ul class="profileIcon d-flex align-items-center">
+                    <li class="nav-item dropdown me-3" style="left: 43%;">
+                        <a href="#" class="nav-link dropdown-toggle" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="markAllNotificationsAsSeen();">
+                            <img class="imageclass" src="{% static 'images/notification.png' %}" alt="Notifications">
+                            {% if notification_count > 0 %}
+                                <span class="badge badge-danger position-absolute" style="top: 10px; right: 10px;">
+                                    {{ notification_count }}
+                                </span>
+                            {% endif %}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" style="width: 355px; max-height: 400px; overflow-y: auto;left: -125px;">
+                            {% if notifications %}
+                                {% for notification in notifications %}
+                                    <li class="dropdown-item {% if not notification.is_read %}bg-light{% endif %}" style="white-space: normal;">
+                                        <span class="fw-bold {% if not notification.is_read %}text-primary{% endif %}">{{ notification.message }}</span>
+                                        <small class="text-muted d-block">{{ notification.timestamp }}</small>
+                                    </li>
+                                    <hr class="dropdown-divider">
+                                {% endfor %}
+                            {% else %}
+                                <li class="dropdown-item text-center text-muted">
+                                    No notifications
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </li>
                 <ul class="profileIcon">
                     <li class="nav-item-user">
                         <a href="/profile" class="nav-link align-middle px-4">
@@ -52,51 +78,49 @@
                 </ul>
             </div>
         </nav>
-    
+
         <div class="row flex-nowrap" style="margin-top: 70px;">
             <!-- Sidebar -->
             <div class="col-auto col-md-2 col-xl-1 px-0 sidebar ">
-                <div class="d-flex flex-column align-items-center align-items-sm-start px-2 pt-2 text-white min-vh-100 ">
-
-    
-                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start " id="menu">
-                        <li class="nav-item">
+                <div class="sidebar1 d-flex flex-column align-items-center align-items-sm-start px-2 pt-2 text-white min-vh-100">
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu" style="margin-top: 5%;">
+                        <li class="nav-item {% if request.resolver_match.url_name == 'trading_view' %}active{% endif %}">
                             <a href="/" class="nav-link align-middle px-2">
                                 <i class="fs-5 bi-house"></i>
                                 <span class="ms-1 d-none d-sm-inline">Home</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item {% if request.resolver_match.url_name == 'portfolio_management' %}active{% endif %}">
                             <a href="/portfolio_management/" class="nav-link align-middle px-2">
                                 <i class="fs-5 bi-graph-up"></i>
                                 <span class="ms-1 d-none d-sm-inline">Portfolio</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item {% if request.resolver_match.url_name == 'order_management' %}active{% endif %}">
                             <a href="/order_management/" class="nav-link align-middle px-2">
                                 <i class="fs-5 bi-speedometer2"></i>
                                 <span class="ms-1 d-none d-sm-inline">Order</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item {% if request.resolver_match.url_name == 'risk_management' %}active{% endif %}">
                             <a href="/risk_management/" class="nav-link align-middle px-2">
                                 <i class="fs-5 bi-speedometer2"></i>
                                 <span class="ms-1 d-none d-sm-inline">Risk</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item {% if request.resolver_match.url_name == 'algorithmic_trading' %}active{% endif %}">
                             <a href="/algorithmic_trading/" class="nav-link align-middle px-2">
                                 <i class="fs-5 bi-speedometer2"></i>
                                 <span class="ms-1 d-none d-sm-inline">Algo Trade</span>
                             </a>
-                        </li>
+                        </li> -->
                     </ul>
-                    <hr>
                 </div>
+                
             </div>
     
             <!-- Main Content -->
-            <div class="col py-3">
+            <div class="col py-3" >
                 <!-- TradingView Widget BEGIN -->
                 <div class="tradingview-widget-container">
                     <div class="tradingview-widget-container__widget"></div>
@@ -140,4 +164,26 @@
     
 
 </body>
+<script>
+    function markAllNotificationsAsSeen() {
+        fetch("{% url 'mark_notification_as_seen' %}", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}",
+                "Content-Type": "application/json",
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                // Optionally, clear the unread badge
+                const badge = document.querySelector(".badge.badge-danger");
+                if (badge) {
+                    badge.remove();
+                }
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    }
+</script>
 </html>

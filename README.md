@@ -7,6 +7,7 @@ This project is a Django-based stock trading platform that supports real-time da
 - Python 3.10 or higher
 - Django 4.x
 - Other dependencies are listed in `requirements.txt`
+- mysql
 
 ## Setup Instructions
 
@@ -32,3 +33,19 @@ source env/bin/activate
 
 # Install all required packages from the requirements.txt file
 pip install -r requirements.txt
+
+
+###4. Create a database in mysql
+
+create schema stock_trading;
+
+
+###5. Perform database migrations
+
+python manage.py makemigrations
+python manage.py migrate
+
+
+###6. Start the webserver
+
+python manage.py runserver

@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from django.contrib import messages
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,7 +30,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-secondary',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}
 # Application definition
 
 INSTALLED_APPS = [
@@ -43,7 +51,8 @@ INSTALLED_APPS = [
     'portfolio_management.apps.PortfolioManagementConfig',
     'risk_management.apps.RiskManagementConfig',
     'channels',
-    'algorithmic_trading.apps.AlgorithmicTradingConfig'
+    'algorithmic_trading.apps.AlgorithmicTradingConfig',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -69,6 +78,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'portfolio_management.context_processor.notification_context',
             ],
         },
     },
@@ -83,11 +93,11 @@ WSGI_APPLICATION = 'stock_trading.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'stock_trading',
-        'USER':'root',
-        'PASSWORD':'root',
-        'HOST':'127.0.0.1',
-        'PORT':'3306'
+        'NAME': os.getenv('DB_NAME','stock_trading'),
+        'USER': os.getenv('DB_USER','root'),
+        'PASSWORD': os.getenv('DB_PASSWORD','root'),
+        'HOST': os.getenv('DB_HOST','127.0.0.1'),
+        'PORT': os.getenv('DB_PORT', '3306')
     }
 }
 
@@ -128,8 +138,15 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# STATICFILES_DIRS = [
+#     BASE_DIR / 'static',
+# ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Ensure STATICFILES_DIRS is properly set if you're using custom directories
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    os.path.join(BASE_DIR, 'static'),
 ]
 
 # Default primary key field type

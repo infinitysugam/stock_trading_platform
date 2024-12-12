@@ -18,6 +18,9 @@
     width: 40px;
     height:40px;
 }
+.nav-item-user::marker{
+    display: none;
+}
 
 /* Adjust padding and spacing for a clean look */
 .nav-link {
@@ -65,9 +68,11 @@
     border-radius: 8px; /* Rounded corners on hover */
 }
 
-.sidebar .nav-link i {
-    margin-right: 10px;
+
+.dropdowm-menu .dropdowm-item{
+    white-space: normal;
 }
+
 
 .sidebar hr {
     border-top: 1px solid rgba(255, 255, 255, 0.2);
@@ -117,7 +122,7 @@
 .tradingview-widget-container {
     flex: 1; /* Allow items to grow */
     padding: 10px; /* Optional padding for better spacing */
-    height:55px
+ 
 }
 
 .chart1 {
@@ -140,10 +145,13 @@
 }
 
 .profileIcon{
-    width: 98%;
-    display: flex;
-    flex-direction: row-reverse;
+    gap: 70px;
+    margin-right: 5%;
+}
 
+.cc{
+    display: flex !important;
+    flex-direction: row-reverse;
 }
 
 .container {
@@ -166,3 +174,67 @@ p {
     font-size: 1.2rem;
     color: #333;
 }
+
+.container-fluid{
+    position: fixed;
+}
+
+.side-container{
+    height: 80vh;
+}
+
+.imageclass{
+    scale: 2.5;
+    height: 30px;
+    margin-top: 10px;
+    margin-left: 15px;
+}
+
+.dropdown-toggle::after{
+    display:none;
+}
+
+
+
+::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+    height: 12px; /* Height for horizontal scrollbar */
+}
+
+::-webkit-scrollbar-track {
+    background: #1a1a1a; /* Background color of the scrollbar track */
+    border-radius: 10px; /* Rounded corners */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1b1c1d; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners */
+    border: 3px solid #1a1a1a; /* Padding around thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #0056b3; /* Hover color */
+}
+
+
+.sidebar1 .nav-item {
+    padding: 10px 20px;
+    color: #ffffff;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar1 .nav-item a {
+    color: #ccc;
+    text-decoration: none;
+}
+
+.sidebar1 .nav-item.active a {
+    width: 100px;
+    color: #ffffff; /* Highlight active item text */
+    font-weight: bold; /* Bold text for active item */
+    background-color: #007bff; /* Background color for active item */
+    border-radius: 8px; /* Rounded corners */
+    transition: all 0.3s ease;
+}
+

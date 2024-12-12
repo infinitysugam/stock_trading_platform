@@ -1,10 +1,19 @@
 .container{
+    display: inline;
     margin: 20px 20px 20px 20px;
-    position: relative;
+    position: sticky;
     left: 5%;
-    height: 75%;
-    top: 10%;
+    height: max-content;
+    top: 20%;
     gap:20px;
+}
+
+.bttns .btn{
+    color: white;
+    background-color: rgb(26, 162, 167);
+    width: 15%;
+    margin:0.5%
+
 }
 
 .r1{
@@ -57,13 +66,15 @@
 
 .risk-table{
     width: -webkit-fill-available;
-    margin-top: 4%;
+    margin-top: 2%;
     background-color: #1a1e23;
     color: #ffffff;
     font-weight: bold;
     padding: 10px;
     text-align: center;
-    border-radius: 10px;
+    border-radius: 20px;
+    margin-bottom: 5%;
+
 }
 
 .risk-table td{
@@ -83,4 +94,13 @@
 
 .risk-table tbody tr:nth-child(even) td {
     background-color: #15191e;
+}
+
+.container h4{
+    color: #f6f8fa;
+}
+.btns .btn{
+    width: 10%;
+    gap:15px;
+    background-color: cadetblue;
 }

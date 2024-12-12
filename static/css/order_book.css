@@ -7,7 +7,7 @@ body {
     padding: 0;
 }
 
-/* Layout */
+/* Main Container */
 .main-container {
     display: flex;
     flex-direction: column;
@@ -15,6 +15,7 @@ body {
     padding: 20px;
 }
 
+/* Rows and Columns */
 .row {
     display: flex;
     justify-content: space-between;
@@ -24,20 +25,20 @@ body {
 }
 
 .column {
-    
     background-color: #101016;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     flex: 1;
     min-width: 300px;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 /* Order Book Table */
-
-.order-book{
-    height: 40%;
-width: 100%;
+.order-book {
+    width: 100%;
+    border-collapse: collapse;
 }
 
 .order-book th {
@@ -46,7 +47,6 @@ width: 100%;
     font-weight: bold;
     padding: 10px;
     text-align: center;
-    
 }
 
 .order-book td {
@@ -69,21 +69,14 @@ width: 100%;
     font-weight: bold;
 }
 
-.first-column h2{
-    font-size: 1.5rem;
-}
-
 /* Place Order Styling */
 .place-order {
-    left: 40%;
-    width: 57%;
-    position: relative;
-    gap:15px;
     background-color: #15191e;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     text-align: center;
+    margin-bottom: 20px;
 }
 
 .place-order h4 {
@@ -96,6 +89,7 @@ width: 100%;
     display: flex;
     justify-content: space-around;
     margin-bottom: 20px;
+    gap: 10px;
 }
 
 .order-type-buttons input[type="radio"] {
@@ -119,11 +113,7 @@ width: 100%;
     color: #0c0c0c;
 }
 
-.btn-buy ::after{
-    background-color: #218838;
-}
-
-.btn-buy:hover{
+.btn-buy:hover {
     background: linear-gradient(135deg, #218838, #43a047);
     transform: scale(1.05);
 }
@@ -133,11 +123,7 @@ width: 100%;
     color: #080808;
 }
 
-.btn-sell ::after{
-    background-color: #c82333;
-}
-
-.btn-sell:hover{
+.btn-sell:hover {
     background: linear-gradient(135deg, #c82333, #c73140);
     transform: scale(1.05);
 }
@@ -157,14 +143,15 @@ width: 100%;
     display: flex;
     justify-content: space-between;
     gap: 20px;
-    margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
 .input-group {
     flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
+    width: 100%;
 }
 
 .input-group label {
@@ -177,7 +164,7 @@ width: 100%;
 }
 
 .input-group input {
-    width: 90%;
+    width: 100%;
     padding: 10px;
     font-size: 1rem;
     border: 1px solid #444;
@@ -193,13 +180,13 @@ width: 100%;
     box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
 }
 
-/* Submit Button */
+/* Default style for the submit button */
 .btn-submit {
     width: 100%;
     padding: 15px;
     font-size: 1.2rem;
     font-weight: bold;
-    background: linear-gradient(135deg, #28a745, #4caf50);
+    background: linear-gradient(135deg, #28a745, #4caf50); /* Default: green */
     color: #ffffff;
     border: none;
     border-radius: 8px;
@@ -207,9 +194,54 @@ width: 100%;
     transition: all 0.3s ease;
 }
 
+/* Hover effect */
 .btn-submit:hover {
-    background: linear-gradient(135deg, #218838, #43a047);
     transform: scale(1.05);
+}
+
+/* Change button color when the "Sell" option is selected */
+input#sell:checked ~ .btn-submit {
+    background: linear-gradient(135deg, #c82333, #c73140); /* Red for Sell */
+}
+
+/* Change button color when the "Buy" option is selected */
+input#buy:checked ~ .btn-submit {
+    background: linear-gradient(135deg, #28a745, #4caf50); /* Green for Buy */
+}
+
+
+/* Transaction History */
+.transaction-history-container {
+    margin-top: 60px;
+    height: 40vh;
+    overflow: auto;
+}
+
+.transaction-history {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #101016;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.transaction-history th {
+    background-color: #131518;
+    color: #ffffff;
+    padding: 10px;
+}
+
+.transaction-history td {
+    padding: 10px;
+    text-align: center;
+}
+
+.transaction-history tbody tr:nth-child(odd) td {
+    background-color: #1e2126;
+}
+
+.transaction-history tbody tr:nth-child(even) td {
+    background-color: #15191e;
 }
 
 /* Responsive Adjustments */
@@ -221,64 +253,59 @@ width: 100%;
     .input-row {
         flex-direction: column;
     }
+
+    .transaction-history-container {
+        margin-top: 10px;
+    }
 }
 
-.first-column{
-    position: absolute;
-    width: 35%;
-    height: 80%;
+
+.buy-sell-container form{
+    display: inline-grid;
+    height: 100%;
+    width: -webkit-fill-available;
 }
 
-.second-row{
-    margin: -5px;
-    position:relative;
-    width: 65%;
-    left:37%;
-    display: flex;
-    flex-direction: column;
-    background-color: #101016;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+.buy-sell-container{
+    height:30%;
 }
 
-.transaction-history{
-    background-color: #1a1e23;
-    color: #ffffff;
-    font-weight: bold;
-    padding: 10px;
-    text-align: center;
+.h2{
+    font-size: 1rem;
 }
 
-.transaction-history td{
-    padding: 10px;
-    text-align: center;
-}
 
-.transaction-history th{
-    font: bold;
-    
-    background-color: #131518;
-}
-
-.transaction-history tbody tr:nth-child(odd) td {
-    background-color: #1e2126;
-}
-
-.transaction-history tbody tr:nth-child(even) td {
-    background-color: #15191e;
-}
-
-.instrument-selector{
-    position:absolute;
-    left: 27%;
+.selectInstrument .p{
+    color: white;
 }
 
 .instrument-selector select{
-    border-radius: 5px;
-    background: #1e2132;
+    height: 40px;
+    width: 150%;
+    border-radius: 5%;
+    background: #161824;
     color: white;
-    width: 130px;
-    height: 30px;
-    margin-left: 5px;
 }
+
+::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+    height: 12px; /* Height for horizontal scrollbar */
+}
+
+::-webkit-scrollbar-track {
+    background: #1a1a1a; /* Background color of the scrollbar track */
+    border-radius: 10px; /* Rounded corners */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1b1c1d; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners */
+    border: 3px solid #1a1a1a; /* Padding around thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #0056b3; /* Hover color */
+
+
+}
+
